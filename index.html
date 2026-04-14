@@ -8,228 +8,131 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#1a120a;
-  --felt:#0d3320;
-  --tile-bg:#F5EDD8;
-  --tile-border:#c8a96e;
-  --tile-shadow:#6b4c1e;
-  --red:#C0392B;
-  --gold:#D4A843;
-  --green:#2ecc71;
-  --text:#F5EDD8;
-  --text-dim:rgba(245,237,216,0.5);
+  --bg:#1a120a; --felt:#0d3320;
+  --tile-bg:#F5EDD8; --tile-border:#c8a96e; --tile-shadow:#6b4c1e;
+  --red:#C0392B; --gold:#D4A843; --green:#2ecc71;
+  --text:#F5EDD8; --dim:rgba(245,237,216,0.5);
 }
 html,body{height:100%;overflow:hidden;background:var(--bg);}
 body{font-family:'DM Mono',monospace;color:var(--text);display:flex;flex-direction:column;height:100dvh;}
 .screen{display:none;flex-direction:column;height:100%;width:100%;}
 .screen.active{display:flex;}
 
-/* ── MENU ── */
+/* MENU */
 #menu{background:var(--bg);align-items:center;justify-content:center;}
 #menu::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(45,106,79,0.25) 0%,transparent 70%);pointer-events:none;}
-.menu-ideogram{font-family:'Noto Serif TC',serif;font-size:96px;font-weight:900;color:var(--red);text-shadow:0 0 60px rgba(192,57,43,0.4),4px 4px 0 rgba(0,0,0,0.5);line-height:1;margin-bottom:4px;animation:pulse 3s ease-in-out infinite;position:relative;z-index:1;}
+.menu-ideogram{font-family:'Noto Serif TC',serif;font-size:96px;font-weight:900;color:var(--red);line-height:1;margin-bottom:4px;animation:pulse 3s ease-in-out infinite;position:relative;z-index:1;text-shadow:0 0 60px rgba(192,57,43,0.4),4px 4px 0 rgba(0,0,0,0.5);}
 @keyframes pulse{0%,100%{text-shadow:0 0 60px rgba(192,57,43,0.4),4px 4px 0 rgba(0,0,0,0.5);}50%{text-shadow:0 0 90px rgba(192,57,43,0.7),4px 4px 0 rgba(0,0,0,0.5);}}
 .menu-title{font-family:'Noto Serif TC',serif;font-size:13px;letter-spacing:0.4em;color:var(--gold);margin-bottom:40px;text-transform:uppercase;position:relative;z-index:1;}
 .menu-wrap{position:relative;z-index:1;width:220px;}
-.btn{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;padding:14px 20px;border:none;border-radius:3px;cursor:pointer;transition:all 0.15s;width:100%;}
-.btn-primary{background:var(--red);color:#fff;}
-.btn-primary:active{background:#a02a20;transform:scale(0.97);}
-.btn-secondary{background:transparent;color:var(--gold);border:1.5px solid var(--gold);}
-.btn-secondary:active{background:rgba(212,168,67,0.1);transform:scale(0.97);}
-.btn-ghost{background:transparent;color:var(--text-dim);border:1px solid rgba(245,237,216,0.15);}
-.btn-ghost:active{transform:scale(0.97);}
-.menu-btns{display:flex;flex-direction:column;gap:12px;}
-.diff-label{font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-align:center;margin-bottom:6px;}
+.diff-label{font-size:10px;letter-spacing:0.2em;color:var(--dim);text-align:center;margin-bottom:6px;}
 .diff-pills{display:flex;gap:6px;justify-content:center;margin-bottom:20px;}
-.pill{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;padding:6px 14px;border-radius:20px;border:1px solid rgba(245,237,216,0.2);background:transparent;color:var(--text-dim);cursor:pointer;transition:all 0.15s;}
+.pill{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;padding:6px 14px;border-radius:20px;border:1px solid rgba(245,237,216,0.2);background:transparent;color:var(--dim);cursor:pointer;transition:all 0.15s;}
 .pill.active{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:500;}
+.menu-btns{display:flex;flex-direction:column;gap:12px;}
+.btn{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;padding:14px 20px;border:none;border-radius:3px;cursor:pointer;transition:all 0.15s;width:100%;}
+.btn-primary{background:var(--red);color:#fff;} .btn-primary:active{background:#a02a20;transform:scale(0.97);}
+.btn-secondary{background:transparent;color:var(--gold);border:1.5px solid var(--gold);} .btn-secondary:active{background:rgba(212,168,67,0.1);}
+.btn-ghost{background:transparent;color:var(--dim);border:1px solid rgba(245,237,216,0.15);}
 
-/* ── GAME ── */
+/* GAME */
 #game{background:var(--felt);flex-direction:column;overflow:hidden;position:relative;}
 #game::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(0,0,0,0.04) 40px,rgba(0,0,0,0.04) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(0,0,0,0.04) 40px,rgba(0,0,0,0.04) 41px);pointer-events:none;}
-
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(0,0,0,0.4);border-bottom:1px solid rgba(255,255,255,0.06);flex-shrink:0;z-index:10;}
 .topbar-left{display:flex;align-items:center;gap:10px;}
 .round-badge{font-family:'Noto Serif TC',serif;font-size:18px;color:var(--red);}
-.wind-info{font-size:10px;color:var(--text-dim);letter-spacing:0.1em;}
+.wind-info{font-size:10px;color:var(--dim);letter-spacing:0.1em;}
 .score-disp{font-family:'Noto Serif TC',serif;font-size:14px;color:var(--gold);}
 .topbar-right{display:flex;gap:8px;}
-.icon-btn{background:transparent;border:none;color:var(--text-dim);font-size:18px;cursor:pointer;padding:4px;line-height:1;}
-
+.icon-btn{background:transparent;border:none;color:var(--dim);font-size:18px;cursor:pointer;padding:4px;line-height:1;}
 .ai-area{display:flex;flex-direction:column;gap:4px;padding:6px 8px;flex-shrink:0;}
 .ai-row{display:flex;align-items:center;gap:6px;}
-.ai-label{font-size:9px;letter-spacing:0.1em;color:var(--text-dim);width:44px;flex-shrink:0;}
+.ai-label{font-size:9px;letter-spacing:0.1em;color:var(--dim);width:44px;flex-shrink:0;}
 .ai-tiles{display:flex;gap:2px;flex-wrap:nowrap;overflow:hidden;}
-
 .status{padding:4px 12px;font-size:10px;color:var(--gold);letter-spacing:0.1em;text-align:center;min-height:22px;background:rgba(0,0,0,0.2);flex-shrink:0;}
-
-/* ── CENTER: DISCARDS ── */
-.center-area{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:6px 8px;min-height:0;position:relative;}
-.discard-pool-label{font-size:9px;color:var(--text-dim);letter-spacing:0.1em;align-self:flex-start;}
+.center-area{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:6px 8px;min-height:0;}
+.discard-pool-label{font-size:9px;color:var(--dim);letter-spacing:0.1em;align-self:flex-start;}
 .discard-pool{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;max-height:110px;overflow-y:auto;padding:8px;background:rgba(0,0,0,0.2);border-radius:6px;width:100%;}
 
-/* ── DISCARD ZONE ── */
-.discard-zone{
-  width:100%;
-  min-height:64px;
-  border:2px dashed rgba(192,57,43,0.4);
-  border-radius:8px;
-  display:flex;align-items:center;justify-content:center;
-  gap:12px;
-  background:rgba(192,57,43,0.05);
-  transition:all 0.2s;
-  flex-shrink:0;
-  position:relative;
-}
+/* DISCARD ZONE */
+.discard-zone{width:100%;min-height:60px;border:2px dashed rgba(192,57,43,0.4);border-radius:8px;display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(192,57,43,0.05);transition:all 0.18s;flex-shrink:0;}
 .discard-zone.hidden{display:none;}
-.discard-zone.drag-over{
-  border-color:var(--red);
-  background:rgba(192,57,43,0.15);
-  box-shadow:0 0 16px rgba(192,57,43,0.3) inset;
-}
-.discard-zone-label{
-  font-size:10px;letter-spacing:0.2em;text-transform:uppercase;
-  color:rgba(192,57,43,0.6);
-  pointer-events:none;
-}
-.discard-zone-icon{font-size:28px;opacity:0.4;pointer-events:none;}
-.discard-zone-tile{
-  /* tile sitting in zone after drop */
-  position:absolute;
-  pointer-events:none;
-}
-.act-mahjong-zone{
-  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;
-  padding:8px 16px;border:none;border-radius:3px;
-  background:var(--red);color:#fff;font-weight:700;text-transform:uppercase;
-  cursor:pointer;
-  animation:glow 1s ease-in-out infinite alternate;
-}
-@keyframes glow{from{box-shadow:0 0 6px rgba(192,57,43,0.4);}to{box-shadow:0 0 20px rgba(192,57,43,1);}}
+.discard-zone.hot{border-color:var(--red);background:rgba(192,57,43,0.18);box-shadow:0 0 18px rgba(192,57,43,0.3) inset;}
+.dz-icon{font-size:24px;opacity:0.4;pointer-events:none;}
+.dz-label{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(192,57,43,0.6);pointer-events:none;}
 
-/* ── PLAYER AREA ── */
+/* PLAYER */
 .player-area{flex-shrink:0;background:rgba(0,0,0,0.3);border-top:1px solid rgba(255,255,255,0.08);}
 .player-melds{display:flex;gap:3px;padding:4px 8px;min-height:32px;flex-wrap:wrap;align-items:center;}
 .player-hand-wrap{padding:4px 4px 4px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
-.player-hand{display:flex;gap:3px;padding:2px 4px;min-width:max-content;position:relative;}
+.player-hand{display:flex;gap:3px;padding:2px 4px;min-width:max-content;}
 .player-actions{display:flex;gap:6px;padding:4px 8px 8px;justify-content:center;flex-wrap:wrap;align-items:center;}
 
-/* ── TILES ── */
-.tile{
-  width:38px;height:52px;
-  background:var(--tile-bg);
-  border:1.5px solid var(--tile-border);
-  border-radius:4px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  cursor:pointer;
-  box-shadow:2px 2px 0 var(--tile-shadow);
-  transition:transform 0.1s,box-shadow 0.1s;
-  flex-shrink:0;
-  position:relative;
-  user-select:none;-webkit-user-select:none;
-  touch-action:none;
-  gap:2px;
-}
+/* TILES */
+.tile{width:38px;height:52px;background:var(--tile-bg);border:1.5px solid var(--tile-border);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;box-shadow:2px 2px 0 var(--tile-shadow);flex-shrink:0;position:relative;user-select:none;-webkit-user-select:none;touch-action:none;gap:2px;}
 .tile-num{font-family:'Noto Serif TC',serif;font-size:13px;font-weight:900;line-height:1;}
 .tile-icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;}
 .tile-icon svg{width:100%;height:100%;}
-.tile.selected{transform:translateY(-10px);box-shadow:2px 8px 0 var(--tile-shadow);}
-.tile.dragging{opacity:0.3;transform:scale(0.94);}
 .tile.face-down{background:#1a5c35;border-color:#145029;cursor:default;}
 .tile.face-down .tile-num,.tile.face-down .tile-icon{display:none;}
 .tile.face-down::after{content:'';position:absolute;inset:4px;border:1px solid rgba(255,255,255,0.12);border-radius:2px;}
 .tile.small{width:25px;height:34px;border-radius:3px;box-shadow:1px 1px 0 var(--tile-shadow);gap:1px;}
-.tile.small .tile-num{font-size:9px;}
-.tile.small .tile-icon{width:13px;height:13px;}
+.tile.small .tile-num{font-size:9px;} .tile.small .tile-icon{width:13px;height:13px;}
 .tile.small.face-down::after{inset:2px;}
 .tile.dt{width:27px;height:37px;border-radius:3px;cursor:default;box-shadow:1px 1px 0 var(--tile-shadow);gap:1px;}
-.tile.dt .tile-num{font-size:10px;}
-.tile.dt .tile-icon{width:14px;height:14px;}
+.tile.dt .tile-num{font-size:10px;} .tile.dt .tile-icon{width:14px;height:14px;}
 .tile.ld{border-color:var(--gold);box-shadow:0 0 8px rgba(212,168,67,0.7),1px 1px 0 var(--tile-shadow);}
 .tile.melded{opacity:0.85;}
+.tile.dragging{opacity:0.3;}
 .tile.ghost-slot{background:rgba(245,237,216,0.12);border:1.5px dashed rgba(212,168,67,0.5);box-shadow:none;}
+.tile.reveal{width:72px;height:100px;box-shadow:4px 4px 0 var(--tile-shadow),0 8px 30px rgba(0,0,0,0.5);gap:4px;cursor:pointer;}
+.tile.reveal .tile-num{font-size:26px;} .tile.reveal .tile-icon{width:38px;height:38px;}
 
-/* ── DRAW REVEAL OVERLAY ── */
-#drawReveal{
-  position:fixed;inset:0;
-  background:rgba(0,0,0,0.75);
-  display:none;
-  align-items:center;justify-content:center;
-  flex-direction:column;
-  gap:20px;
-  z-index:200;
-  backdrop-filter:blur(2px);
-}
+/* DRAW REVEAL */
+#drawReveal{position:fixed;inset:0;background:rgba(0,0,0,0.78);display:none;align-items:center;justify-content:center;flex-direction:column;gap:20px;z-index:200;backdrop-filter:blur(3px);}
 #drawReveal.active{display:flex;}
-.reveal-label{
-  font-size:11px;letter-spacing:0.3em;text-transform:uppercase;
-  color:var(--text-dim);
-}
-.reveal-tile-wrap{
-  position:relative;
-  animation:revealPop 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards;
-}
-@keyframes revealPop{
-  from{transform:scale(0.4) rotateY(90deg);opacity:0;}
-  to{transform:scale(1) rotateY(0deg);opacity:1;}
-}
-/* big tile for reveal */
-.tile.reveal{
-  width:72px;height:100px;
-  box-shadow:4px 4px 0 var(--tile-shadow),0 8px 30px rgba(0,0,0,0.5);
-  cursor:pointer;gap:4px;
-}
-.tile.reveal .tile-num{font-size:26px;}
-.tile.reveal .tile-icon{width:38px;height:38px;}
-.tile.reveal:active{transform:scale(0.96);}
-.reveal-hint{font-size:10px;color:var(--text-dim);letter-spacing:0.1em;}
+.reveal-label{font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--dim);}
+.reveal-wrap{animation:revealPop 0.35s cubic-bezier(0.34,1.56,0.64,1) both;}
+@keyframes revealPop{from{transform:scale(0.4) rotateY(90deg);opacity:0;}to{transform:scale(1) rotateY(0deg);opacity:1;}}
+.reveal-hint{font-size:10px;color:var(--dim);letter-spacing:0.1em;}
 
-/* ── DRAG GHOST ── */
-#dragGhost{
-  position:fixed;pointer-events:none;z-index:999;
-  width:38px;height:52px;
-  background:var(--tile-bg);
-  border:2px solid var(--gold);
-  border-radius:4px;
-  display:none;flex-direction:column;align-items:center;justify-content:center;
-  box-shadow:4px 10px 20px rgba(0,0,0,0.6);
-  gap:2px;transform:rotate(4deg) scale(1.1);
-}
+/* DRAG GHOST */
+#dragGhost{position:fixed;pointer-events:none;z-index:999;width:38px;height:52px;background:var(--tile-bg);border:2px solid var(--gold);border-radius:4px;display:none;flex-direction:column;align-items:center;justify-content:center;box-shadow:4px 10px 20px rgba(0,0,0,0.6);gap:2px;transform:rotate(4deg) scale(1.1);}
 
-/* ── CLAIM ACTIONS ── */
+/* ACTIONS */
 .act-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;padding:8px 14px;border:none;border-radius:3px;cursor:pointer;transition:all 0.12s;text-transform:uppercase;}
 .act-btn:active{transform:scale(0.95);}
 .act-draw{background:var(--green);color:#111;}
 .act-claim{background:var(--gold);color:#111;}
-.act-pass{background:rgba(255,255,255,0.1);color:var(--text-dim);}
+.act-pass{background:rgba(255,255,255,0.1);color:var(--dim);}
 .act-mahjong{background:var(--red);color:#fff;font-weight:700;animation:glow 1s ease-in-out infinite alternate;}
+@keyframes glow{from{box-shadow:0 0 6px rgba(192,57,43,0.4);}to{box-shadow:0 0 20px rgba(192,57,43,1);}}
 
-/* ── MODAL ── */
+/* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.82);display:none;align-items:center;justify-content:center;z-index:300;padding:20px;}
 .modal-overlay.active{display:flex;}
 .modal{background:#0d1f12;border:1px solid rgba(212,168,67,0.3);border-radius:8px;padding:24px;width:100%;max-width:340px;max-height:80vh;overflow-y:auto;}
 .modal h2{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--gold);margin-bottom:16px;text-align:center;}
-.modal-body{font-size:12px;line-height:1.9;color:var(--text-dim);margin-bottom:20px;}
+.modal-body{font-size:12px;line-height:1.9;color:var(--dim);margin-bottom:20px;}
 .modal-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:12px;}
 .modal-row:last-child{border-bottom:none;}
 .modal-val{color:var(--gold);font-family:'Noto Serif TC',serif;font-size:14px;}
 .modal-btns{display:flex;gap:8px;flex-direction:column;}
 
-/* ── HINT ── */
-.hint-panel{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.9);border-top:1px solid rgba(212,168,67,0.3);padding:8px 12px;font-size:10px;color:var(--text-dim);line-height:1.6;z-index:5;display:none;}
+/* HINT */
+.hint-panel{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.9);border-top:1px solid rgba(212,168,67,0.3);padding:8px 12px;font-size:10px;color:var(--dim);line-height:1.6;z-index:5;display:none;}
 .hint-panel.visible{display:block;}
 .hint-title{color:var(--gold);font-size:10px;letter-spacing:0.15em;margin-bottom:4px;text-transform:uppercase;}
 </style>
 </head>
 <body>
 
-<!-- DRAG GHOST -->
 <div id="dragGhost"></div>
 
-<!-- DRAW REVEAL OVERLAY -->
+<!-- DRAW REVEAL -->
 <div id="drawReveal">
   <div class="reveal-label">You drew</div>
-  <div class="reveal-tile-wrap" id="revealTileWrap"></div>
+  <div class="reveal-wrap" id="revealWrap"></div>
   <div class="reveal-hint">Tap tile to add to hand</div>
 </div>
 
@@ -268,21 +171,16 @@ body{font-family:'DM Mono',monospace;color:var(--text);display:flex;flex-directi
       <button class="icon-btn" onclick="showMenu()">✕</button>
     </div>
   </div>
-
   <div class="ai-area" id="aiArea"></div>
   <div class="status" id="status">Starting…</div>
-
   <div class="center-area">
     <div class="discard-pool-label">DISCARD POOL</div>
     <div class="discard-pool" id="discardPool"></div>
-
-    <!-- Discard zone: shown only during discard phase -->
     <div class="discard-zone hidden" id="discardZone">
-      <div class="discard-zone-icon">🗑</div>
-      <div class="discard-zone-label">Drag tile here to discard</div>
+      <div class="dz-icon">🗑</div>
+      <div class="dz-label">Drag tile here to discard</div>
     </div>
   </div>
-
   <div class="player-area">
     <div class="player-melds" id="playerMelds"></div>
     <div class="player-hand-wrap">
@@ -290,7 +188,6 @@ body{font-family:'DM Mono',monospace;color:var(--text);display:flex;flex-directi
     </div>
     <div class="player-actions" id="playerActions"></div>
   </div>
-
   <div class="hint-panel" id="hintPanel">
     <div class="hint-title">💡 Practice Hint</div>
     <div id="hintText">Tap Draw Tile to begin.</div>
@@ -307,68 +204,21 @@ body{font-family:'DM Mono',monospace;color:var(--text);display:flex;flex-directi
 </div>
 
 <script>
-// ─── SVG ICONS ────────────────────────────────
-const SVG = {
-  B:(c='#1a6b35')=>`<svg viewBox="0 0 18 18" fill="none">
-    <rect x="2.5" y="2" width="3" height="14" rx="1.5" fill="${c}"/>
-    <rect x="7.5" y="4" width="3" height="10" rx="1.5" fill="${c}"/>
-    <rect x="12.5" y="2" width="3" height="14" rx="1.5" fill="${c}"/>
-    <rect x="1.5" y="7.5" width="4.5" height="1.5" rx=".75" fill="${c}" opacity=".45"/>
-    <rect x="6.5" y="8.5" width="4.5" height="1.5" rx=".75" fill="${c}" opacity=".45"/>
-    <rect x="11.5" y="7.5" width="4.5" height="1.5" rx=".75" fill="${c}" opacity=".45"/>
-  </svg>`,
-  C:(c='#1a3a8b')=>`<svg viewBox="0 0 18 18" fill="none">
-    <circle cx="9" cy="9" r="7" stroke="${c}" stroke-width="2.2"/>
-    <circle cx="9" cy="9" r="3.8" stroke="${c}" stroke-width="1.8"/>
-    <circle cx="9" cy="9" r="1.3" fill="${c}"/>
-  </svg>`,
-  CH:(c='#C0392B')=>`<svg viewBox="0 0 18 18" fill="none">
-    <rect x="2" y="2.5" width="14" height="2" rx="1" fill="${c}"/>
-    <rect x="4.5" y="2.5" width="2" height="13" rx="1" fill="${c}"/>
-    <rect x="11.5" y="2.5" width="2" height="13" rx="1" fill="${c}"/>
-    <rect x="2" y="13.5" width="14" height="2" rx="1" fill="${c}"/>
-    <rect x="2" y="7.5" width="14" height="1.5" rx=".75" fill="${c}"/>
-  </svg>`,
-  WIND:(c='#6a2aab')=>`<svg viewBox="0 0 18 18" fill="none">
-    <polygon points="9,1.5 11,8 9,6.5 7,8" fill="${c}"/>
-    <polygon points="9,16.5 11,10 9,11.5 7,10" fill="${c}" opacity=".55"/>
-    <polygon points="1.5,9 8,7 6.5,9 8,11" fill="${c}" opacity=".75"/>
-    <polygon points="16.5,9 10,7 11.5,9 10,11" fill="${c}" opacity=".4"/>
-    <circle cx="9" cy="9" r="2" fill="${c}"/>
-  </svg>`,
-  DR:(c='#C0392B')=>`<svg viewBox="0 0 18 18" fill="none">
-    <rect x="2" y="3" width="14" height="2" rx="1" fill="${c}"/>
-    <rect x="7.5" y="3" width="3" height="12" rx="1.5" fill="${c}"/>
-    <rect x="4" y="8" width="10" height="1.8" rx=".9" fill="${c}"/>
-    <rect x="2" y="13" width="14" height="2" rx="1" fill="${c}"/>
-  </svg>`,
-  DG:(c='#1a6b35')=>`<svg viewBox="0 0 18 18" fill="none">
-    <rect x="2" y="3" width="14" height="1.8" rx=".9" fill="${c}"/>
-    <rect x="4" y="7" width="10" height="1.8" rx=".9" fill="${c}"/>
-    <rect x="4" y="11" width="10" height="1.8" rx=".9" fill="${c}"/>
-    <rect x="2" y="14.5" width="14" height="1.8" rx=".9" fill="${c}"/>
-    <rect x="7.5" y="3" width="3" height="13" rx="1.5" fill="${c}"/>
-  </svg>`,
-  DW:(c='#888')=>`<svg viewBox="0 0 18 18" fill="none">
-    <rect x="2" y="2" width="14" height="14" rx="2" stroke="${c}" stroke-width="2"/>
-    <rect x="5" y="5" width="8" height="8" rx="1" stroke="${c}" stroke-width="1.2"/>
-  </svg>`,
-  BONUS:()=>`<svg viewBox="0 0 18 18" fill="none">
-    <circle cx="9" cy="9" r="2.5" fill="#D4A843"/>
-    <ellipse cx="9" cy="3" rx="2" ry="2.8" fill="#e8c06a" opacity=".9"/>
-    <ellipse cx="9" cy="15" rx="2" ry="2.8" fill="#e8c06a" opacity=".9"/>
-    <ellipse cx="3" cy="9" rx="2.8" ry="2" fill="#e8c06a" opacity=".9"/>
-    <ellipse cx="15" cy="9" rx="2.8" ry="2" fill="#e8c06a" opacity=".9"/>
-    <ellipse cx="4.8" cy="4.8" rx="1.6" ry="2.2" transform="rotate(-45 4.8 4.8)" fill="#f0d080" opacity=".7"/>
-    <ellipse cx="13.2" cy="4.8" rx="1.6" ry="2.2" transform="rotate(45 13.2 4.8)" fill="#f0d080" opacity=".7"/>
-    <ellipse cx="4.8" cy="13.2" rx="1.6" ry="2.2" transform="rotate(45 4.8 13.2)" fill="#f0d080" opacity=".7"/>
-    <ellipse cx="13.2" cy="13.2" rx="1.6" ry="2.2" transform="rotate(-45 13.2 13.2)" fill="#f0d080" opacity=".7"/>
-  </svg>`,
+// ══════════════════════════════════════════
+// SVG ICONS
+// ══════════════════════════════════════════
+const SVG={
+  B:(c='#1a6b35')=>`<svg viewBox="0 0 18 18" fill="none"><rect x="2.5" y="2" width="3" height="14" rx="1.5" fill="${c}"/><rect x="7.5" y="4" width="3" height="10" rx="1.5" fill="${c}"/><rect x="12.5" y="2" width="3" height="14" rx="1.5" fill="${c}"/><rect x="1.5" y="7.5" width="4.5" height="1.5" rx=".75" fill="${c}" opacity=".45"/><rect x="6.5" y="8.5" width="4.5" height="1.5" rx=".75" fill="${c}" opacity=".45"/><rect x="11.5" y="7.5" width="4.5" height="1.5" rx=".75" fill="${c}" opacity=".45"/></svg>`,
+  C:(c='#1a3a8b')=>`<svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="${c}" stroke-width="2.2"/><circle cx="9" cy="9" r="3.8" stroke="${c}" stroke-width="1.8"/><circle cx="9" cy="9" r="1.3" fill="${c}"/></svg>`,
+  CH:(c='#C0392B')=>`<svg viewBox="0 0 18 18" fill="none"><rect x="2" y="2.5" width="14" height="2" rx="1" fill="${c}"/><rect x="4.5" y="2.5" width="2" height="13" rx="1" fill="${c}"/><rect x="11.5" y="2.5" width="2" height="13" rx="1" fill="${c}"/><rect x="2" y="13.5" width="14" height="2" rx="1" fill="${c}"/><rect x="2" y="7.5" width="14" height="1.5" rx=".75" fill="${c}"/></svg>`,
+  WIND:(c='#6a2aab')=>`<svg viewBox="0 0 18 18" fill="none"><polygon points="9,1.5 11,8 9,6.5 7,8" fill="${c}"/><polygon points="9,16.5 11,10 9,11.5 7,10" fill="${c}" opacity=".55"/><polygon points="1.5,9 8,7 6.5,9 8,11" fill="${c}" opacity=".75"/><polygon points="16.5,9 10,7 11.5,9 10,11" fill="${c}" opacity=".4"/><circle cx="9" cy="9" r="2" fill="${c}"/></svg>`,
+  DR:(c='#C0392B')=>`<svg viewBox="0 0 18 18" fill="none"><rect x="2" y="3" width="14" height="2" rx="1" fill="${c}"/><rect x="7.5" y="3" width="3" height="12" rx="1.5" fill="${c}"/><rect x="4" y="8" width="10" height="1.8" rx=".9" fill="${c}"/><rect x="2" y="13" width="14" height="2" rx="1" fill="${c}"/></svg>`,
+  DG:(c='#1a6b35')=>`<svg viewBox="0 0 18 18" fill="none"><rect x="2" y="3" width="14" height="1.8" rx=".9" fill="${c}"/><rect x="4" y="7" width="10" height="1.8" rx=".9" fill="${c}"/><rect x="4" y="11" width="10" height="1.8" rx=".9" fill="${c}"/><rect x="2" y="14.5" width="14" height="1.8" rx=".9" fill="${c}"/><rect x="7.5" y="3" width="3" height="13" rx="1.5" fill="${c}"/></svg>`,
+  DW:(c='#888')=>`<svg viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="2" stroke="${c}" stroke-width="2"/><rect x="5" y="5" width="8" height="8" rx="1" stroke="${c}" stroke-width="1.2"/></svg>`,
+  BONUS:()=>`<svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="2.5" fill="#D4A843"/><ellipse cx="9" cy="3" rx="2" ry="2.8" fill="#e8c06a" opacity=".9"/><ellipse cx="9" cy="15" rx="2" ry="2.8" fill="#e8c06a" opacity=".9"/><ellipse cx="3" cy="9" rx="2.8" ry="2" fill="#e8c06a" opacity=".9"/><ellipse cx="15" cy="9" rx="2.8" ry="2" fill="#e8c06a" opacity=".9"/><ellipse cx="4.8" cy="4.8" rx="1.6" ry="2.2" transform="rotate(-45 4.8 4.8)" fill="#f0d080" opacity=".7"/><ellipse cx="13.2" cy="4.8" rx="1.6" ry="2.2" transform="rotate(45 13.2 4.8)" fill="#f0d080" opacity=".7"/><ellipse cx="4.8" cy="13.2" rx="1.6" ry="2.2" transform="rotate(45 4.8 13.2)" fill="#f0d080" opacity=".7"/><ellipse cx="13.2" cy="13.2" rx="1.6" ry="2.2" transform="rotate(-45 13.2 13.2)" fill="#f0d080" opacity=".7"/></svg>`,
 };
 
-const WLABELS=['東','南','西','北'];
-const WNAMES=['East','South','West','North'];
-const DCOLORS=['#C0392B','#1a6b35','#888'];
+const WL=['東','南','西','北'], WN=['East','South','West','North'], DC=['#C0392B','#1a6b35','#888'];
 
 function getSVG(t){
   if(!t)return'';
@@ -381,7 +231,7 @@ function getSVG(t){
 function getNum(t){
   if(!t)return'';
   if(t.type==='suit')return t.value.num;
-  if(t.type==='wind')return WLABELS[t.value];
+  if(t.type==='wind')return WL[t.value];
   if(t.type==='dragon')return['中','發','白'][t.value];
   if(t.type==='bonus')return t.value<4?`F${t.value+1}`:`S${t.value-3}`;
   return'?';
@@ -390,149 +240,124 @@ function getColor(t){
   if(!t)return'#333';
   if(t.type==='suit'){if(t.value.suit==='B')return'#1a6b35';if(t.value.suit==='C')return'#1a3a8b';return'#C0392B';}
   if(t.type==='wind')return'#6a2aab';
-  if(t.type==='dragon')return DCOLORS[t.value];
+  if(t.type==='dragon')return DC[t.value];
   return'#D4A843';
 }
 
-// ─── DECK ─────────────────────────────────────
+// ══════════════════════════════════════════
+// DECK
+// ══════════════════════════════════════════
 function buildDeck(){
   let tiles=[],id=0;
-  for(let s of['B','C','CH'])for(let n=1;n<=9;n++)for(let c=0;c<4;c++)tiles.push({type:'suit',value:{suit:s,num:n},id:id++});
+  for(const s of['B','C','CH'])for(let n=1;n<=9;n++)for(let c=0;c<4;c++)tiles.push({type:'suit',value:{suit:s,num:n},id:id++});
   for(let w=0;w<4;w++)for(let c=0;c<4;c++)tiles.push({type:'wind',value:w,id:id++});
   for(let d=0;d<3;d++)for(let c=0;c<4;c++)tiles.push({type:'dragon',value:d,id:id++});
   for(let b=0;b<8;b++)tiles.push({type:'bonus',value:b,id:id++,bonus:true});
   return tiles;
 }
-function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-function tileKey(t){if(!t)return'';if(t.type==='suit')return`${t.value.suit}${t.value.num}`;if(t.type==='wind')return`W${t.value}`;if(t.type==='dragon')return`D${t.value}`;if(t.type==='bonus')return`X${t.value}`;return'';}
-function match(a,b){return tileKey(a)===tileKey(b);}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=0|Math.random()*(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+function tKey(t){if(!t)return'';if(t.type==='suit')return`${t.value.suit}${t.value.num}`;if(t.type==='wind')return`W${t.value}`;if(t.type==='dragon')return`D${t.value}`;if(t.type==='bonus')return`X${t.value}`;return'';}
+function same(a,b){return tKey(a)===tKey(b);}
 
-// ─── WIN CHECK ────────────────────────────────
-function canFormPung(hand,tile){return hand.filter(t=>match(t,tile)).length>=2;}
-function canFormChow(hand,tile){
+// ══════════════════════════════════════════
+// WIN / SCORE
+// ══════════════════════════════════════════
+function canPung(hand,tile){return hand.filter(t=>same(t,tile)).length>=2;}
+function canChow(hand,tile){
   if(tile.type!=='suit')return false;
   const{suit,num}=tile.value;
-  const nums=hand.filter(t=>t.type==='suit'&&t.value.suit===suit).map(t=>t.value.num);
+  const ns=hand.filter(t=>t.type==='suit'&&t.value.suit===suit).map(t=>t.value.num);
   for(let s=Math.max(1,num-2);s<=Math.min(7,num);s++){
-    const need=[s,s+1,s+2].filter(n=>n!==num);
-    if(need.every(n=>nums.includes(n)))return true;
+    if([s,s+1,s+2].filter(n=>n!==num).every(n=>ns.includes(n)))return true;
   }return false;
 }
-function canWin(hand){return chkWin([...hand].sort((a,b)=>tileKey(a).localeCompare(tileKey(b))));}
-function chkWin(tiles){
-  if(tiles.length===0)return false;
-  if(tiles.length===2)return match(tiles[0],tiles[1]);
-  if(tiles.length%3===2)return match(tiles[0],tiles[1])&&chkSets(tiles.slice(2));
-  return chkSets(tiles);
+function canWin(hand){return winCheck([...hand].sort((a,b)=>tKey(a).localeCompare(tKey(b))));}
+function winCheck(t){
+  if(!t.length)return false;
+  if(t.length===2)return same(t[0],t[1]);
+  if(t.length%3===2)return same(t[0],t[1])&&setsOk(t.slice(2));
+  return setsOk(t);
 }
-function chkSets(tiles){
-  if(tiles.length===0)return true;
-  const t=tiles[0],rest=tiles.slice(1);
-  if(rest.length>=2&&match(rest[0],t)&&match(rest[1],t)){if(chkSets(rest.slice(2)))return true;}
-  if(t.type==='suit'){
-    const{suit,num}=t.value;
-    const i1=rest.findIndex(r=>r.type==='suit'&&r.value.suit===suit&&r.value.num===num+1);
-    if(i1>=0){const r2=[...rest];r2.splice(i1,1);const i2=r2.findIndex(r=>r.type==='suit'&&r.value.suit===suit&&r.value.num===num+2);if(i2>=0){const r3=[...r2];r3.splice(i2,1);if(chkSets(r3))return true;}}
+function setsOk(t){
+  if(!t.length)return true;
+  const h=t[0],r=t.slice(1);
+  if(r.length>=2&&same(r[0],h)&&same(r[1],h)&&setsOk(r.slice(2)))return true;
+  if(h.type==='suit'){
+    const{suit,num}=h.value;
+    const i1=r.findIndex(x=>x.type==='suit'&&x.value.suit===suit&&x.value.num===num+1);
+    if(i1>=0){const r2=[...r];r2.splice(i1,1);const i2=r2.findIndex(x=>x.type==='suit'&&x.value.suit===suit&&x.value.num===num+2);if(i2>=0){const r3=[...r2];r3.splice(i2,1);if(setsOk(r3))return true;}}
   }return false;
 }
-function handScore(hand,bonuses,selfDraw,concealed){
+function score(hand,bonuses,selfDraw,concealed){
   let p=0;if(selfDraw)p+=2;if(concealed)p+=4;
-  const g={};for(const t of hand){const k=tileKey(t);if(!g[k])g[k]=[];g[k].push(t);}
-  for(const[k,ts]of Object.entries(g)){if(ts.length===3)p+=(ts[0].type==='wind'||ts[0].type==='dragon')?4:2;if(ts.length===4)p+=8;}
-  p+=bonuses.length;return p;
+  const g={};for(const t of hand){const k=tKey(t);if(!g[k])g[k]=[];g[k].push(t);}
+  for(const ts of Object.values(g)){if(ts.length===3)p+=(ts[0].type==='wind'||ts[0].type==='dragon')?4:2;if(ts.length===4)p+=8;}
+  return p+bonuses.length;
 }
 
-// ─── AI ───────────────────────────────────────
-function aiDiscard(hand,diff){
-  const s=hand.map(t=>{let sc=usefulness(t,hand);if(diff==='easy')sc+=(Math.random()-.5)*5;else if(diff==='medium')sc+=(Math.random()-.5)*2;return{t,sc};});
-  return s.sort((a,b)=>a.sc-b.sc)[0].t;
+// ══════════════════════════════════════════
+// AI
+// ══════════════════════════════════════════
+function aiPickDiscard(hand,diff){
+  const scored=hand.map(tile=>{
+    let s=utility(tile,hand);
+    if(diff==='easy')s+=(Math.random()-.5)*5;
+    else if(diff==='medium')s+=(Math.random()-.5)*2;
+    return{tile,s};
+  });
+  return scored.sort((a,b)=>a.s-b.s)[0].tile;
 }
-function usefulness(tile,hand){
-  let sc=0;const cnt=hand.filter(t=>match(t,tile)).length;
-  if(cnt>=3)return 10;if(cnt===2)sc+=4;
-  if(tile.type==='suit'){const{suit,num}=tile.value;const adj=hand.filter(t=>t.type==='suit'&&t.value.suit===suit&&Math.abs(t.value.num-num)<=2&&t.value.num!==num).length;sc+=adj*2;if(num>=3&&num<=7)sc+=1;}
-  return sc;
+function utility(tile,hand){
+  let s=0;const cnt=hand.filter(t=>same(t,tile)).length;
+  if(cnt>=3)return 10;if(cnt===2)s+=4;
+  if(tile.type==='suit'){const{suit,num}=tile.value;s+=hand.filter(t=>t.type==='suit'&&t.value.suit===suit&&Math.abs(t.value.num-num)<=2&&t.value.num!==num).length*2;if(num>=3&&num<=7)s+=1;}
+  return s;
 }
-function aiShouldClaim(hand,tile,type,diff){
+function aiWantsClaim(hand,tile,type,diff){
   const thr=diff==='easy'?.4:diff==='medium'?.65:.82;
-  if(type==='pung')return canFormPung(hand,tile)&&Math.random()<thr;
-  if(type==='chow')return canFormChow(hand,tile)&&Math.random()<thr*.7;
+  if(type==='pung')return canPung(hand,tile)&&Math.random()<thr;
+  if(type==='chow')return canChow(hand,tile)&&Math.random()<thr*.7;
   return false;
 }
 
-// ─── GAME STATE ───────────────────────────────
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
 let G={};
 
-function initGame(practice,difficulty){
+function newGame(practice,difficulty){
   G={
     wall:shuffle(buildDeck()),
     players:[
-      {hand:[],melds:[],bonuses:[],seat:0,isHuman:true},
+      {hand:[],melds:[],bonuses:[],seat:0},
       {hand:[],melds:[],bonuses:[],seat:1},
       {hand:[],melds:[],bonuses:[],seat:2},
       {hand:[],melds:[],bonuses:[],seat:3},
     ],
-    discards:[],currentPlayer:0,roundWind:0,
+    discards:[],curP:0,roundWind:0,
     phase:'draw',practice,difficulty,
-    pendingDraw:null,  // tile shown in reveal overlay, not yet in hand
-    lastDiscard:null,lastDiscardBy:-1,
+    pendingTile:null,
+    lastDiscard:null,lastBy:-1,
     concealed:[true,true,true,true],
-    gameOver:false,claimTimer:null,
-    totalScore:0,handOrder:[],
+    over:false,claimTimer:null,
+    totalScore:0,order:[],
   };
-  for(let p=0;p<4;p++)for(let i=0;i<13;i++)drawTileInto(p);
-  G.handOrder=G.players[0].hand.map(t=>t.id);
+  for(let p=0;p<4;p++)for(let i=0;i<13;i++)dealTo(p);
+  G.order=G.players[0].hand.map(t=>t.id);
 }
 
-// Draw for AI/initial (no reveal)
-function drawTileInto(p){
+function dealTo(p){
   if(!G.wall.length)return false;
   const t=G.wall.pop();
-  if(t.bonus){G.players[p].bonuses.push(t);return drawTileInto(p);}
+  if(t.bonus){G.players[p].bonuses.push(t);return dealTo(p);}
   G.players[p].hand.push(t);
-  if(p===0)G.handOrder.push(t.id);
+  if(p===0)G.order.push(t.id);
   return true;
 }
 
-// Draw for human: show reveal overlay
-function humanDrawReveal(){
-  if(!G.wall.length){endRoundDraw();return;}
-  let t=G.wall.pop();
-  // handle bonus chain
-  while(t&&t.bonus){
-    G.players[0].bonuses.push(t);
-    if(!G.wall.length){endRoundDraw();return;}
-    t=G.wall.pop();
-  }
-  G.pendingDraw=t;
-  showReveal(t);
-}
-
-function showReveal(tile){
-  const wrap=document.getElementById('revealTileWrap');
-  wrap.innerHTML='';
-  const el=mkTile(tile,{reveal:true});
-  el.onclick=()=>acceptDraw();
-  wrap.appendChild(el);
-  document.getElementById('drawReveal').classList.add('active');
-  updateTopBar();
-}
-
-function acceptDraw(){
-  const t=G.pendingDraw;
-  if(!t)return;
-  G.players[0].hand.push(t);
-  G.handOrder.push(t.id);
-  G.pendingDraw=null;
-  document.getElementById('drawReveal').classList.remove('active');
-  G.phase='discard';
-  showDiscardZone(true);
-  setStatus('Now drag a tile to the discard zone — or tap Mahjong if you can win.');
-  renderAll();
-  if(canWin(G.players[0].hand))setStatus('You can win! Tap Mahjong, or discard a tile.');
-}
-
-// ─── TILE ELEMENT ─────────────────────────────
+// ══════════════════════════════════════════
+// TILE ELEMENT
+// ══════════════════════════════════════════
 function mkTile(tile,opts={}){
   const el=document.createElement('div');
   const cls=['tile'];
@@ -550,155 +375,188 @@ function mkTile(tile,opts={}){
   return el;
 }
 
-// ─── DISCARD ZONE ─────────────────────────────
-function showDiscardZone(show){
-  const z=document.getElementById('discardZone');
-  if(show)z.classList.remove('hidden');
-  else z.classList.add('hidden');
-}
+// ══════════════════════════════════════════
+// DRAG STATE — single source of truth
+// ══════════════════════════════════════════
+const D={
+  active:false,
+  tileId:null,
+  insertIdx:-1,   // where ghost slot appears
+  overZone:false, // is finger over discard zone
+};
 
-function setupDiscardZone(){
-  const z=document.getElementById('discardZone');
-  // Touch events for drop target
-  z.addEventListener('touchmove',e=>{
-    if(DR.active){
-      z.classList.add('drag-over');
-      e.preventDefault();
-    }
-  },{passive:false});
-  z.addEventListener('touchend',e=>{
-    if(DR.active&&DR.discardMode){
-      z.classList.remove('drag-over');
-      const tileToDiscard=G.players[0].hand.find(t=>t.id===DR.id);
-      if(tileToDiscard)doDiscard(tileToDiscard);
-      DR.active=false;
-      DR.id=null;
-      document.getElementById('dragGhost').style.display='none';
-      e.preventDefault();
-    }
-  },{passive:false});
-  z.addEventListener('touchcancel',()=>z.classList.remove('drag-over'));
-}
-
-// ─── DRAG & DROP (TOUCH) ──────────────────────
-let DR={active:false,id:null,overIdx:-1,discardMode:false};
-
-function getOrdered(){
+function orderedHand(){
   const byId={};for(const t of G.players[0].hand)byId[t.id]=t;
-  return G.handOrder.filter(id=>byId[id]).map(id=>byId[id]);
+  return G.order.filter(id=>byId[id]).map(id=>byId[id]);
 }
 
-function setupDrag(el,tile,posIdx){
-  let longPressTimer=null;
-  let touchStartY=0;
-
-  el.addEventListener('touchstart',e=>{
-    const touch=e.touches[0];
-    touchStartY=touch.clientY;
-    // Start drag immediately
-    DR={active:true,id:tile.id,overIdx:posIdx,discardMode:G.phase==='discard'&&G.currentPlayer===0};
-
-    const gh=document.getElementById('dragGhost');
-    gh.innerHTML='';
-    const n=document.createElement('div');n.className='tile-num';n.textContent=getNum(tile);n.style.color=getColor(tile);
-    const ic=document.createElement('div');ic.className='tile-icon';ic.innerHTML=getSVG(tile);
-    gh.appendChild(n);gh.appendChild(ic);
-    gh.style.display='flex';
-    gh.style.left=(touch.clientX-19)+'px';
-    gh.style.top=(touch.clientY-60)+'px';
-    el.classList.add('dragging');
-    e.preventDefault();
-  },{passive:false});
-
-  el.addEventListener('touchmove',e=>{
-    if(!DR.active)return;
-    const touch=e.touches[0];
-    const gh=document.getElementById('dragGhost');
-    gh.style.left=(touch.clientX-19)+'px';
-    gh.style.top=(touch.clientY-60)+'px';
-
-    // Check if over discard zone
-    const zone=document.getElementById('discardZone');
-    if(!zone.classList.contains('hidden')){
-      const zr=zone.getBoundingClientRect();
-      const overZone=touch.clientX>=zr.left&&touch.clientX<=zr.right&&touch.clientY>=zr.top&&touch.clientY<=zr.bottom;
-      zone.classList.toggle('drag-over',overZone);
-    }
-
-    // Reorder logic (only if not heading toward discard zone)
-    if(G.phase==='discard'||G.phase==='draw'){
-      const handDiv=document.getElementById('playerHand');
-      const kids=[...handDiv.querySelectorAll('.tile:not(.dragging):not(.ghost-slot)')];
-      const ordered=getOrdered();
-      const fromIdx=ordered.findIndex(t=>t.id===DR.id);
-      let newOver=DR.overIdx;
-      for(let i=0;i<kids.length;i++){
-        const r=kids[i].getBoundingClientRect();
-        if(touch.clientX>=r.left&&touch.clientX<=r.right){
-          newOver=i>=fromIdx?i+1:i;break;
-        }
-      }
-      if(newOver!==DR.overIdx){DR.overIdx=newOver;renderHandDragging();}
-    }
-    e.preventDefault();
-  },{passive:false});
-
-  const finish=e=>{
-    if(!DR.active)return;
-    const zone=document.getElementById('discardZone');
-    zone.classList.remove('drag-over');
-
-    // Check if dropped on discard zone
-    if(DR.discardMode&&e.changedTouches){
-      const touch=e.changedTouches[0];
-      const zr=zone.getBoundingClientRect();
-      const overZone=!zone.classList.contains('hidden')&&touch.clientX>=zr.left&&touch.clientX<=zr.right&&touch.clientY>=zr.top&&touch.clientY<=zr.bottom;
-      if(overZone){
-        DR.active=false;DR.id=null;
-        document.getElementById('dragGhost').style.display='none';
-        const tileToDiscard=G.players[0].hand.find(t=>t.id===tile.id);
-        if(tileToDiscard)doDiscard(tileToDiscard);
-        e.preventDefault();return;
-      }
-    }
-
-    // Otherwise reorder
-    DR.active=false;
-    document.getElementById('dragGhost').style.display='none';
-    const fromIdx=G.handOrder.indexOf(DR.id);
-    if(fromIdx!==-1&&DR.overIdx!==fromIdx&&DR.overIdx!==fromIdx+1){
-      G.handOrder.splice(fromIdx,1);
-      let to=DR.overIdx>fromIdx?DR.overIdx-1:DR.overIdx;
-      G.handOrder.splice(to,0,DR.id);
-    }
-    DR.id=null;DR.overIdx=-1;
-    renderPlayerHand();
-    e.preventDefault();
-  };
-  el.addEventListener('touchend',finish,{passive:false});
-  el.addEventListener('touchcancel',e=>{DR.active=false;document.getElementById('dragGhost').style.display='none';renderPlayerHand();},{passive:false});
+// Called once per tile element creation
+function bindDrag(el,tile){
+  el.addEventListener('touchstart', onTouchStart.bind(null,el,tile), {passive:false});
 }
 
-function renderHandDragging(){
-  const handDiv=document.getElementById('playerHand');handDiv.innerHTML='';
-  const ordered=getOrdered();
-  const fromIdx=ordered.findIndex(t=>t.id===DR.id);
-  const items=[];
-  for(let i=0;i<=ordered.length;i++){
-    if(DR.active&&i===DR.overIdx&&i!==fromIdx&&i!==fromIdx+1)items.push({ghost:true});
-    if(i<ordered.length)items.push({tile:ordered[i],dragging:ordered[i].id===DR.id});
+function onTouchStart(el,tile,e){
+  // Only drag during discard phase on player's turn, OR always allow reorder
+  D.active=true;
+  D.tileId=tile.id;
+  const ordered=orderedHand();
+  D.insertIdx=ordered.findIndex(t=>t.id===tile.id);
+  D.overZone=false;
+
+  const touch=e.touches[0];
+  buildGhost(tile,touch);
+  el.classList.add('dragging');
+  e.preventDefault();
+
+  // Bind move/end to document so they fire even if finger leaves element
+  document.addEventListener('touchmove',onTouchMove,{passive:false});
+  document.addEventListener('touchend',onTouchEnd,{passive:false});
+  document.addEventListener('touchcancel',onTouchCancel,{passive:false});
+}
+
+function onTouchMove(e){
+  if(!D.active)return;
+  const touch=e.touches[0];
+
+  // Move ghost
+  const gh=document.getElementById('dragGhost');
+  gh.style.left=(touch.clientX-19)+'px';
+  gh.style.top=(touch.clientY-60)+'px';
+
+  // Check discard zone
+  const zone=document.getElementById('discardZone');
+  const zoneVisible=!zone.classList.contains('hidden');
+  if(zoneVisible){
+    const zr=zone.getBoundingClientRect();
+    D.overZone=touch.clientX>=zr.left&&touch.clientX<=zr.right&&touch.clientY>=zr.top&&touch.clientY<=zr.bottom;
+    zone.classList.toggle('hot',D.overZone);
+  } else {
+    D.overZone=false;
   }
-  for(const item of items){
+
+  // Reorder: find insert position from tile positions
+  const handDiv=document.getElementById('playerHand');
+  const nonDragging=[...handDiv.querySelectorAll('.tile:not(.dragging):not(.ghost-slot)')];
+  const ordered=orderedHand();
+  const fromIdx=ordered.findIndex(t=>t.id===D.tileId);
+  let newInsert=fromIdx; // default: no change
+
+  if(nonDragging.length>0){
+    // Find which gap the finger is in
+    let placed=false;
+    for(let i=0;i<nonDragging.length;i++){
+      const r=nonDragging[i].getBoundingClientRect();
+      const mid=r.left+r.width/2;
+      if(touch.clientX<mid){
+        // Insert before child i (in non-dragging list)
+        // Map back: non-dragging[i] corresponds to ordered index, skipping fromIdx
+        const nonDragOrdered=ordered.filter((_,idx)=>idx!==fromIdx);
+        const targetTile=nonDragging[i].__tileId;
+        const targetIdx=ordered.findIndex(t=>t.id===targetTile);
+        newInsert=targetIdx===-1?fromIdx:targetIdx;
+        placed=true;break;
+      }
+    }
+    if(!placed){
+      // Past last tile → insert at end
+      newInsert=ordered.length-1;
+    }
+  }
+
+  if(newInsert!==D.insertIdx){
+    D.insertIdx=newInsert;
+    renderHandWhileDragging();
+  }
+
+  e.preventDefault();
+}
+
+function onTouchEnd(e){
+  if(!D.active)return;
+  cleanup();
+
+  const zone=document.getElementById('discardZone');
+  zone.classList.remove('hot');
+
+  if(D.overZone&&G.phase==='discard'&&G.curP===0){
+    // Drop onto discard zone
+    const tile=G.players[0].hand.find(t=>t.id===D.tileId);
+    D.active=false;D.tileId=null;
+    if(tile)doDiscard(tile);
+  } else {
+    // Reorder
+    const fromIdx=G.order.indexOf(D.tileId);
+    const toIdx=D.insertIdx;
+    if(fromIdx!==-1&&toIdx!==-1&&fromIdx!==toIdx){
+      G.order.splice(fromIdx,1);
+      const adjusted=toIdx>fromIdx?toIdx-1:toIdx;
+      G.order.splice(adjusted,0,D.tileId);
+    }
+    D.active=false;D.tileId=null;
+    renderPlayerHand();
+  }
+  e.preventDefault();
+}
+
+function onTouchCancel(){
+  cleanup();
+  D.active=false;D.tileId=null;
+  document.getElementById('discardZone').classList.remove('hot');
+  renderPlayerHand();
+}
+
+function cleanup(){
+  document.removeEventListener('touchmove',onTouchMove);
+  document.removeEventListener('touchend',onTouchEnd);
+  document.removeEventListener('touchcancel',onTouchCancel);
+  document.getElementById('dragGhost').style.display='none';
+}
+
+function buildGhost(tile,touch){
+  const gh=document.getElementById('dragGhost');
+  gh.innerHTML='';
+  const n=document.createElement('div');n.className='tile-num';n.textContent=getNum(tile);n.style.color=getColor(tile);
+  const ic=document.createElement('div');ic.className='tile-icon';ic.innerHTML=getSVG(tile);
+  gh.appendChild(n);gh.appendChild(ic);
+  gh.style.display='flex';
+  gh.style.left=(touch.clientX-19)+'px';
+  gh.style.top=(touch.clientY-60)+'px';
+}
+
+function renderHandWhileDragging(){
+  const handDiv=document.getElementById('playerHand');
+  handDiv.innerHTML='';
+  const ordered=orderedHand();
+  const fromIdx=ordered.findIndex(t=>t.id===D.tileId);
+  const toIdx=D.insertIdx;
+
+  // Build display order with ghost slot
+  // Strategy: remove dragged tile, insert ghost at toIdx
+  const without=ordered.filter((_,i)=>i!==fromIdx);
+  const insertAt=Math.max(0,Math.min(toIdx,without.length));
+  const display=[];
+  for(let i=0;i<without.length;i++){
+    if(i===insertAt)display.push({ghost:true});
+    display.push({tile:without[i],dragging:false});
+  }
+  if(insertAt>=without.length)display.push({ghost:true});
+  // Also show dragging tile as faded in original slot? No — ghost slot is cleaner.
+  // Add the dragged tile as dragging at its position
+  display.splice(fromIdx<toIdx?fromIdx:fromIdx+1,0,{tile:ordered[fromIdx],dragging:true});
+
+  for(const item of display){
     if(item.ghost){handDiv.appendChild(mkTile(null,{ghost:true}));continue;}
     const el=mkTile(item.tile,{});
     if(item.dragging)el.classList.add('dragging');
-    el.onclick=()=>{};
-    setupDrag(el,item.tile,items.indexOf(item));
+    el.__tileId=item.tile.id;
+    if(!item.dragging)bindDrag(el,item.tile);
     handDiv.appendChild(el);
   }
 }
 
-// ─── RENDER ───────────────────────────────────
+// ══════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════
 function renderAll(){renderAI();renderDiscards();renderPlayerHand();renderActions();updateTopBar();if(G.practice)renderHint();}
 
 function renderAI(){
@@ -707,12 +565,11 @@ function renderAI(){
     const pl=G.players[p];
     const row=document.createElement('div');row.className='ai-row';
     const lbl=document.createElement('div');lbl.className='ai-label';
-    lbl.textContent=WLABELS[pl.seat]+(pl.bonuses.length?` +${pl.bonuses.length}🌸`:'');
+    lbl.textContent=WL[pl.seat]+(pl.bonuses.length?` +${pl.bonuses.length}🌸`:'');
     row.appendChild(lbl);
     const td=document.createElement('div');td.className='ai-tiles';
     for(const m of pl.melds){for(const t of m.tiles)td.appendChild(mkTile(t,{small:true,melded:true}));const s=document.createElement('div');s.style.width='3px';td.appendChild(s);}
-    const show=G.practice;
-    for(const t of pl.hand)td.appendChild(mkTile(t,{small:true,faceDown:!show}));
+    for(const t of pl.hand)td.appendChild(mkTile(t,{small:true,faceDown:!G.practice}));
     row.appendChild(td);area.appendChild(row);
   }
 }
@@ -720,64 +577,55 @@ function renderAI(){
 function renderDiscards(){
   const pool=document.getElementById('discardPool');pool.innerHTML='';
   for(let i=0;i<G.discards.length;i++){
-    const d=G.discards[i],isLast=i===G.discards.length-1;
-    pool.appendChild(mkTile(d.tile,{dt:true,ld:isLast}));
+    pool.appendChild(mkTile(G.discards[i].tile,{dt:true,ld:i===G.discards.length-1}));
   }
   if(G.discards.length)pool.scrollTop=pool.scrollHeight;
 }
 
 function renderPlayerHand(){
-  if(DR.active){renderHandDragging();return;}
+  if(D.active){renderHandWhileDragging();return;}
   const handDiv=document.getElementById('playerHand');handDiv.innerHTML='';
-  const ordered=getOrdered();
-  for(let i=0;i<ordered.length;i++){
-    const tile=ordered[i];
+  for(const tile of orderedHand()){
     const el=mkTile(tile,{});
-    setupDrag(el,tile,i);
+    el.__tileId=tile.id;
+    bindDrag(el,tile);
     handDiv.appendChild(el);
   }
-  // Melds & bonuses
+  // Melds + bonuses
   const md=document.getElementById('playerMelds');md.innerHTML='';
   for(const m of G.players[0].melds){
     for(const t of m.tiles)md.appendChild(mkTile(t,{small:true,melded:true}));
-    const s=document.createElement('span');s.style.cssText='display:inline-block;width:3px;';md.appendChild(s);
+    const sp=document.createElement('span');sp.style.cssText='display:inline-block;width:3px;';md.appendChild(sp);
   }
-  if(G.players[0].bonuses.length){const bl=document.createElement('span');bl.style.cssText='font-size:10px;color:var(--gold);align-self:center;';bl.textContent=G.players[0].bonuses.map(b=>b.value<4?'🌸':'🍂').join('');md.appendChild(bl);}
+  if(G.players[0].bonuses.length){
+    const bl=document.createElement('span');bl.style.cssText='font-size:10px;color:var(--gold);align-self:center;';
+    bl.textContent=G.players[0].bonuses.map(b=>b.value<4?'🌸':'🍂').join('');
+    md.appendChild(bl);
+  }
 }
 
 function renderActions(){
   const acts=document.getElementById('playerActions');acts.innerHTML='';
-  if(G.gameOver)return;
+  if(G.over)return;
   const pl=G.players[0];
 
   if(G.phase==='claim'&&G.lastDiscard){
     const t=G.lastDiscard;
-    const cP=canFormPung(pl.hand,t);
-    const cC=G.lastDiscardBy===3&&canFormChow(pl.hand,t);
-    const cW=canWin([...pl.hand,t]);
+    const cW=canWin([...pl.hand,t]),cP=canPung(pl.hand,t),cC=G.lastBy===3&&canChow(pl.hand,t);
     if(cW)addBtn(acts,'Mahjong! 🀄','act-mahjong',()=>humanWin(t,false));
     if(cP)addBtn(acts,'Pung','act-claim',()=>humanClaim('pung',t));
     if(cC)addBtn(acts,'Chow','act-claim',()=>humanClaim('chow',t));
     addBtn(acts,'Pass','act-pass',()=>passClaim());
     return;
   }
-
-  if(G.currentPlayer===0){
-    if(G.phase==='draw'){
-      addBtn(acts,'Draw Tile','act-draw',()=>humanDrawReveal());
-    }
+  if(G.curP===0){
+    if(G.phase==='draw'){addBtn(acts,'Draw Tile','act-draw',()=>humanDraw());}
     if(G.phase==='discard'){
-      if(canWin(pl.hand)){
-        const mb=document.createElement('button');
-        mb.className='act-mahjong-zone';
-        mb.textContent='Mahjong! 🀄';
-        mb.onclick=()=>humanWin(null,true);
-        acts.appendChild(mb);
-      }
-      const hint=document.createElement('div');
-      hint.style.cssText='font-size:10px;color:var(--text-dim);text-align:center;';
-      hint.textContent='Drag any tile into the discard zone ↑';
-      acts.appendChild(hint);
+      if(canWin(pl.hand))addBtn(acts,'Mahjong! 🀄','act-mahjong',()=>humanWin(null,true));
+      const h=document.createElement('div');
+      h.style.cssText='font-size:10px;color:var(--dim);text-align:center;';
+      h.textContent='Drag any tile into the discard zone ↑';
+      acts.appendChild(h);
     }
   }
 }
@@ -785,66 +633,79 @@ function renderActions(){
 function addBtn(c,label,cls,fn){const b=document.createElement('button');b.className=`act-btn ${cls}`;b.textContent=label;b.onclick=fn;c.appendChild(b);}
 
 function updateTopBar(){
-  document.getElementById('roundWind').textContent=WLABELS[G.roundWind];
-  document.getElementById('seatInfo').textContent=`Your seat: ${WNAMES[G.players[0].seat]}`;
+  document.getElementById('roundWind').textContent=WL[G.roundWind];
+  document.getElementById('seatInfo').textContent=`Your seat: ${WN[G.players[0].seat]}`;
   document.getElementById('wallCount').textContent=`Wall: ${G.wall.length}`;
   document.getElementById('scoreDisp').textContent=`${G.totalScore} pts`;
 }
-function setStatus(m){document.getElementById('status').textContent=m;}
+function setSt(m){document.getElementById('status').textContent=m;}
+function showZone(v){document.getElementById('discardZone').classList.toggle('hidden',!v);}
 
-// ─── PLAYER ACTIONS ───────────────────────────
-function doDiscard(tile){
-  if(G.currentPlayer!==0||G.phase!=='discard')return;
-  G.players[0].hand=G.players[0].hand.filter(x=>x.id!==tile.id);
-  G.handOrder=G.handOrder.filter(id=>id!==tile.id);
-  G.discards.push({tile,by:0});
-  G.lastDiscard=tile;G.lastDiscardBy=0;
-  G.concealed[0]=false;G.phase='claim';
-  showDiscardZone(false);
-  setStatus('You discarded. AI considering…');
-  renderAll();
-  setTimeout(()=>processAIClaims(),700);
-}
-
-function humanDrawReveal(){
-  if(G.currentPlayer!==0||G.phase!=='draw')return;
-  humanDrawReveal_exec();
-}
-function humanDrawReveal_exec(){
-  humanDrawReveal();
-}
-// Renamed to avoid collision
-function humanDrawReveal(){
-  if(G.currentPlayer!==0||G.phase!=='draw')return;
-  if(!G.wall.length){endRoundDraw();return;}
+// ══════════════════════════════════════════
+// HUMAN ACTIONS
+// ══════════════════════════════════════════
+function humanDraw(){
+  if(G.curP!==0||G.phase!=='draw')return;
+  if(!G.wall.length){endDraw();return;}
+  // Pop tiles, handle bonus chain
   let t=G.wall.pop();
   while(t&&t.bonus){
     G.players[0].bonuses.push(t);
     updateTopBar();
-    if(!G.wall.length){endRoundDraw();return;}
+    if(!G.wall.length){endDraw();return;}
     t=G.wall.pop();
   }
-  G.pendingDraw=t;
-  // Show reveal
-  const wrap=document.getElementById('revealTileWrap');
+  G.pendingTile=t;
+  // Show reveal overlay
+  const wrap=document.getElementById('revealWrap');
   wrap.innerHTML='';
+  // re-trigger animation
+  wrap.style.animation='none';
+  wrap.offsetHeight; // reflow
+  wrap.style.animation='';
   const el=mkTile(t,{reveal:true});
-  el.onclick=()=>acceptDraw();
+  el.onclick=acceptDraw;
   wrap.appendChild(el);
   document.getElementById('drawReveal').classList.add('active');
   updateTopBar();
+}
+
+function acceptDraw(){
+  if(!G.pendingTile)return;
+  G.players[0].hand.push(G.pendingTile);
+  G.order.push(G.pendingTile.id);
+  G.pendingTile=null;
+  document.getElementById('drawReveal').classList.remove('active');
+  G.phase='discard';
+  showZone(true);
+  setSt('Drag a tile to discard zone — or tap Mahjong if you can win.');
+  renderAll();
+  if(canWin(G.players[0].hand))setSt('You can win! Tap Mahjong, or discard.');
+}
+
+function doDiscard(tile){
+  if(G.curP!==0||G.phase!=='discard')return;
+  G.players[0].hand=G.players[0].hand.filter(t=>t.id!==tile.id);
+  G.order=G.order.filter(id=>id!==tile.id);
+  G.discards.push({tile,by:0});
+  G.lastDiscard=tile;G.lastBy=0;
+  G.concealed[0]=false;G.phase='claim';
+  showZone(false);
+  setSt('You discarded. AI considering…');
+  renderAll();
+  setTimeout(aiClaims,700);
 }
 
 function humanClaim(type,tile){
   clearTimeout(G.claimTimer);
   const pl=G.players[0];
   if(type==='pung'){
-    const m=pl.hand.filter(t=>match(t,tile)).slice(0,2);
+    const m=pl.hand.filter(t=>same(t,tile)).slice(0,2);
     pl.melds.push({type:'pung',tiles:[tile,...m]});
-    pl.hand=pl.hand.filter(t=>!m.map(x=>x.id).includes(t.id));
-    for(const x of m)G.handOrder=G.handOrder.filter(id=>id!==x.id);
+    pl.hand=pl.hand.filter(t=>!m.find(x=>x.id===t.id));
+    for(const x of m)G.order=G.order.filter(id=>id!==x.id);
     G.discards.pop();G.concealed[0]=false;
-  } else if(type==='chow'){
+  } else {
     const{suit,num}=tile.value;
     const st=pl.hand.filter(t=>t.type==='suit'&&t.value.suit===suit);
     let ct=null;
@@ -855,58 +716,59 @@ function humanClaim(type,tile){
     }
     if(ct){
       pl.melds.push({type:'chow',tiles:[tile,...ct]});
-      pl.hand=pl.hand.filter(t=>!ct.map(x=>x.id).includes(t.id));
-      for(const x of ct)G.handOrder=G.handOrder.filter(id=>id!==x.id);
+      pl.hand=pl.hand.filter(t=>!ct.find(x=>x.id===t.id));
+      for(const x of ct)G.order=G.order.filter(id=>id!==x.id);
       G.discards.pop();G.concealed[0]=false;
     }
   }
-  G.currentPlayer=0;G.phase='discard';G.lastDiscard=null;
-  showDiscardZone(true);
-  setStatus('Claimed! Drag a tile to the discard zone.');
+  G.curP=0;G.phase='discard';G.lastDiscard=null;
+  showZone(true);
+  setSt('Claimed! Drag a tile to the discard zone.');
   renderAll();
 }
 
 function passClaim(){
   clearTimeout(G.claimTimer);
-  G.currentPlayer=(G.lastDiscardBy+1)%4;
-  if(G.currentPlayer===0){G.phase='draw';setStatus('Your turn — tap Draw Tile.');renderAll();}
-  else{G.phase='draw';setStatus(`${WNAMES[G.players[G.currentPlayer].seat]}'s turn…`);renderAll();setTimeout(()=>aiTurn(G.currentPlayer),800);}
+  G.curP=(G.lastBy+1)%4;
+  if(G.curP===0){G.phase='draw';setSt('Your turn — tap Draw Tile.');showZone(false);renderAll();}
+  else{G.phase='draw';setSt(`${WN[G.players[G.curP].seat]}'s turn…`);renderAll();setTimeout(()=>aiTurn(G.curP),800);}
 }
 
 function humanWin(dt,selfDraw){
   const pl=G.players[0];if(dt)pl.hand.push(dt);
-  const pts=handScore(pl.hand,pl.bonuses,selfDraw,G.concealed[0]);
-  G.totalScore+=pts;G.gameOver=true;
-  showDiscardZone(false);
+  const pts=score(pl.hand,pl.bonuses,selfDraw,G.concealed[0]);
+  G.totalScore+=pts;G.over=true;showZone(false);
   showWinModal(pts,selfDraw);
 }
 
-// ─── AI TURNS ─────────────────────────────────
-function processAIClaims(){
+// ══════════════════════════════════════════
+// AI
+// ══════════════════════════════════════════
+function aiClaims(){
   if(!G.lastDiscard)return;
   const t=G.lastDiscard;
   for(let p=1;p<=3;p++){if(canWin([...G.players[p].hand,t])){aiWin(p,t);return;}}
   let claimed=false;
-  for(let p=1;p<=3;p++){if(aiShouldClaim(G.players[p].hand,t,'pung',G.difficulty)){aiMeld(p,'pung',t);claimed=true;break;}}
+  for(let p=1;p<=3;p++){if(aiWantsClaim(G.players[p].hand,t,'pung',G.difficulty)){aiMeld(p,'pung',t);claimed=true;break;}}
   if(!claimed){
-    G.currentPlayer=(G.lastDiscardBy+1)%4;
-    if(G.currentPlayer===0){G.phase='draw';setStatus('Your turn — tap Draw Tile.');renderAll();}
-    else{G.phase='draw';renderAll();setTimeout(()=>aiTurn(G.currentPlayer),600);}
+    G.curP=(G.lastBy+1)%4;
+    if(G.curP===0){G.phase='draw';setSt('Your turn — tap Draw Tile.');renderAll();}
+    else{G.phase='draw';renderAll();setTimeout(()=>aiTurn(G.curP),600);}
   }
 }
 
 function aiTurn(p){
-  if(G.gameOver)return;G.currentPlayer=p;
+  if(G.over)return;G.curP=p;
   const pl=G.players[p];
-  if(!drawTileInto(p)){endRoundDraw();return;}
-  setStatus(`${WNAMES[pl.seat]} is thinking…`);renderAll();
+  if(!dealTo(p)){endDraw();return;}
+  setSt(`${WN[pl.seat]} is thinking…`);renderAll();
   if(canWin(pl.hand)){setTimeout(()=>aiWin(p,null),600);return;}
   setTimeout(()=>{
-    const d=aiDiscard(pl.hand,G.difficulty);
+    const d=aiPickDiscard(pl.hand,G.difficulty);
     pl.hand=pl.hand.filter(t=>t.id!==d.id);
-    G.discards.push({tile:d,by:p});G.lastDiscard=d;G.lastDiscardBy=p;G.phase='claim';
-    setStatus(`${WNAMES[pl.seat]} discarded — Claim?`);renderAll();
-    G.claimTimer=setTimeout(()=>{if(G.phase==='claim')processAIClaims();},2500);
+    G.discards.push({tile:d,by:p});G.lastDiscard=d;G.lastBy=p;G.phase='claim';
+    setSt(`${WN[pl.seat]} discarded — Claim?`);renderAll();
+    G.claimTimer=setTimeout(()=>{if(G.phase==='claim')aiClaims();},2500);
     renderActions();
   },800+Math.random()*400);
 }
@@ -914,116 +776,113 @@ function aiTurn(p){
 function aiMeld(p,type,tile){
   const pl=G.players[p];
   if(type==='pung'){
-    const m=pl.hand.filter(t=>match(t,tile)).slice(0,2);
+    const m=pl.hand.filter(t=>same(t,tile)).slice(0,2);
     pl.melds.push({type:'pung',tiles:[tile,...m]});
-    pl.hand=pl.hand.filter(t=>!m.map(x=>x.id).includes(t.id));
+    pl.hand=pl.hand.filter(t=>!m.find(x=>x.id===t.id));
     G.discards.pop();G.concealed[p]=false;
   }
-  G.currentPlayer=p;G.phase='discard';
-  setStatus(`${WNAMES[pl.seat]} claimed a Pung!`);renderAll();
+  G.curP=p;G.phase='discard';setSt(`${WN[pl.seat]} claimed a Pung!`);renderAll();
   setTimeout(()=>{
-    const d=aiDiscard(pl.hand,G.difficulty);
+    const d=aiPickDiscard(pl.hand,G.difficulty);
     pl.hand=pl.hand.filter(t=>t.id!==d.id);
-    G.discards.push({tile:d,by:p});G.lastDiscard=d;G.lastDiscardBy=p;G.phase='claim';
-    setStatus(`${WNAMES[pl.seat]} discarded — Claim?`);renderAll();
-    G.claimTimer=setTimeout(()=>{if(G.phase==='claim')processAIClaims();},2500);
+    G.discards.push({tile:d,by:p});G.lastDiscard=d;G.lastBy=p;G.phase='claim';
+    setSt(`${WN[pl.seat]} discarded — Claim?`);renderAll();
+    G.claimTimer=setTimeout(()=>{if(G.phase==='claim')aiClaims();},2500);
     renderActions();
   },900);
 }
 
 function aiWin(p,dt){
   const pl=G.players[p];if(dt)pl.hand.push(dt);
-  const self=!dt,pts=handScore(pl.hand,pl.bonuses,self,G.concealed[p]);
-  G.gameOver=true;showDiscardZone(false);
-  const loss=self?-pts:(G.lastDiscardBy===0?-pts:-Math.floor(pts/2));
+  const self=!dt,pts=score(pl.hand,pl.bonuses,self,G.concealed[p]);
+  G.over=true;showZone(false);
+  const loss=self?-pts:(G.lastBy===0?-pts:-Math.floor(pts/2));
   G.totalScore+=loss;showLoseModal(p,pts,loss,self);
 }
 
-// ─── END & MODALS ─────────────────────────────
-function endRoundDraw(){
-  G.gameOver=true;showDiscardZone(false);
-  showModal('Draw!','<p>The wall ran out — no winner.</p>',[
-    {label:'Play Again',cls:'btn-primary',fn:()=>{hideModal();startGame(G.practice);}},
-    {label:'Menu',cls:'btn-ghost',fn:()=>showMenu()},
+// ══════════════════════════════════════════
+// MODALS
+// ══════════════════════════════════════════
+function endDraw(){
+  G.over=true;showZone(false);
+  modal('Draw!','<p>The wall ran out — no winner.</p>',[
+    {l:'Play Again',c:'btn-primary',f:()=>{hideModal();startGame(G.practice);}},
+    {l:'Menu',c:'btn-ghost',f:showMenu},
   ]);
 }
-
 function showWinModal(pts,selfDraw){
   let b=`<div class="modal-row"><span>Hand value</span><span class="modal-val">${pts} pts</span></div>`;
   b+=`<div class="modal-row"><span>Win type</span><span class="modal-val">${selfDraw?'Self-draw':'Discard claim'}</span></div>`;
   b+=`<div class="modal-row"><span>Concealed</span><span class="modal-val">${G.concealed[0]?'Yes ✓':'No'}</span></div>`;
   b+=`<div class="modal-row"><span>Total score</span><span class="modal-val" style="color:var(--green)">${G.totalScore} pts</span></div>`;
-  showModal('麻將! You Win! 🀄',b,[
-    {label:'Next Round',cls:'btn-primary',fn:()=>{hideModal();startGame(G.practice);}},
-    {label:'Menu',cls:'btn-ghost',fn:()=>showMenu()},
+  modal('麻將! You Win! 🀄',b,[
+    {l:'Next Round',c:'btn-primary',f:()=>{hideModal();startGame(G.practice);}},
+    {l:'Menu',c:'btn-ghost',f:showMenu},
   ]);
 }
-
 function showLoseModal(winner,pts,loss,selfDraw){
   const pl=G.players[winner];
-  let b=`<div class="modal-row"><span>${WNAMES[pl.seat]} wins</span><span class="modal-val">${pts} pts</span></div>`;
+  let b=`<div class="modal-row"><span>${WN[pl.seat]} wins</span><span class="modal-val">${pts} pts</span></div>`;
   b+=`<div class="modal-row"><span>Win type</span><span class="modal-val">${selfDraw?'Self-draw':'Off your discard'}</span></div>`;
   b+=`<div class="modal-row"><span>Your change</span><span class="modal-val" style="color:var(--red)">${loss} pts</span></div>`;
   b+=`<div class="modal-row"><span>Total score</span><span class="modal-val">${G.totalScore} pts</span></div>`;
-  showModal(`${WNAMES[pl.seat]} Wins!`,b,[
-    {label:'Next Round',cls:'btn-primary',fn:()=>{hideModal();startGame(G.practice);}},
-    {label:'Menu',cls:'btn-ghost',fn:()=>showMenu()},
+  modal(`${WN[pl.seat]} Wins!`,b,[
+    {l:'Next Round',c:'btn-primary',f:()=>{hideModal();startGame(G.practice);}},
+    {l:'Menu',c:'btn-ghost',f:showMenu},
   ]);
 }
-
-function showModal(title,body,btns){
+function modal(title,body,btns){
   document.getElementById('modalTitle').textContent=title;
   document.getElementById('modalBody').innerHTML=body;
   const bc=document.getElementById('modalBtns');bc.innerHTML='';
-  for(const b of btns){const el=document.createElement('button');el.className=`btn ${b.cls}`;el.textContent=b.label;el.onclick=b.fn;bc.appendChild(el);}
+  for(const b of btns){const el=document.createElement('button');el.className=`btn ${b.c}`;el.textContent=b.l;el.onclick=b.f;bc.appendChild(el);}
   document.getElementById('modalOverlay').classList.add('active');
 }
 function hideModal(){document.getElementById('modalOverlay').classList.remove('active');}
 
 function showRules(){
-  const b=`
+  modal('Rules',`
     <p><strong style="color:var(--gold)">Goal:</strong> 4 sets + 1 pair = Mahjong!</p><br>
     <p><strong style="color:var(--gold)">Sets:</strong></p>
     <p>• <strong>Chow</strong> — 3 consecutive, same suit</p>
     <p>• <strong>Pung</strong> — 3 identical tiles</p>
     <p>• <strong>Kong</strong> — 4 identical tiles</p>
     <p>• <strong>Pair</strong> — 2 identical (need exactly 1)</p><br>
-    <p><strong style="color:var(--gold)">Suits:</strong></p>
-    <p>• Green stalks = Bamboo</p>
-    <p>• Blue rings = Circle</p>
-    <p>• Red grid = Character</p><br>
+    <p><strong style="color:var(--gold)">Suits:</strong> Green stalks = Bamboo · Blue rings = Circle · Red grid = Character</p><br>
     <p><strong style="color:var(--gold)">Claim priority:</strong> Win > Pung > Chow</p><br>
     <p><strong style="color:var(--gold)">Controls:</strong></p>
-    <p>• Tap Draw Tile → tile reveals → tap to accept</p>
-    <p>• Drag tile to red zone → discard it</p>
-    <p>• Drag within hand → reorder</p>
-  `;
-  showModal('Rules',b,[{label:'Got it',cls:'btn-primary',fn:()=>hideModal()}]);
+    <p>• Tap Draw → see your tile → tap to accept</p>
+    <p>• Drag tile up into red zone → discard it</p>
+    <p>• Drag within hand → reorder tiles</p>
+  `,[{l:'Got it',c:'btn-primary',f:hideModal}]);
 }
 
-// ─── HINTS ────────────────────────────────────
+// ══════════════════════════════════════════
+// HINTS
+// ══════════════════════════════════════════
 function renderHint(){
-  const ht=document.getElementById('hintText');
   const pl=G.players[0];let h='';
-  if(G.phase==='draw')h='Tap "Draw Tile" — you\'ll see what you got before it enters your hand.';
+  if(G.phase==='draw')h='Tap "Draw Tile" to see your tile before it enters your hand.';
   else if(G.phase==='discard'){
     if(canWin(pl.hand))h='🀄 You can win! Tap Mahjong!';
     else{
-      const iso=pl.hand.filter(t=>{const o=pl.hand.filter(x=>x.id!==t.id);return!canFormPung(o,t)&&(t.type!=='suit'||!canFormChow(o,t));});
-      h=iso.length?`Safe to discard: ${iso.slice(0,3).map(t=>tileKey(t)).join(', ')}`:'Drag any tile into the red discard zone.';
+      const iso=pl.hand.filter(t=>{const o=pl.hand.filter(x=>x.id!==t.id);return!canPung(o,t)&&(t.type!=='suit'||!canChow(o,t));});
+      h=iso.length?`Safe to discard: ${iso.slice(0,3).map(tKey).join(', ')}`:'Drag a tile up into the red discard zone.';
     }
   } else if(G.phase==='claim'&&G.lastDiscard){
     const t=G.lastDiscard,hs=[];
-    if(canWin([...pl.hand,t]))hs.push('You can WIN on this tile!');
-    if(canFormPung(pl.hand,t))hs.push('Pung available');
-    if(canFormChow(pl.hand,t))hs.push('Chow available');
-    h=hs.length?hs.join(' · '):"Pass — this tile doesn't help.";
+    if(canWin([...pl.hand,t]))hs.push('You can WIN!');
+    if(canPung(pl.hand,t))hs.push('Pung available');
+    if(canChow(pl.hand,t))hs.push('Chow available');
+    h=hs.length?hs.join(' · '):"Pass — tile doesn't help.";
   }
-  ht.textContent=h;
+  document.getElementById('hintText').textContent=h;
 }
 function toggleHint(){document.getElementById('hintPanel').classList.toggle('visible');}
 
-// ─── NAV ──────────────────────────────────────
+// ══════════════════════════════════════════
+// NAV
+// ══════════════════════════════════════════
 let currentDiff='medium';
 function setDiff(d){
   currentDiff=d;
@@ -1033,24 +892,24 @@ function setDiff(d){
 
 function startGame(practice){
   hideModal();
-  initGame(practice,currentDiff);
+  newGame(practice,currentDiff);
   document.getElementById('menu').classList.remove('active');
   document.getElementById('game').classList.add('active');
   document.getElementById('hintBtn').style.display=practice?'block':'none';
   if(practice)document.getElementById('hintPanel').classList.add('visible');
   else document.getElementById('hintPanel').classList.remove('visible');
-  showDiscardZone(false);
-  G.phase='draw';G.currentPlayer=0;
-  setStatus('Your turn — tap Draw Tile.');
-  setupDiscardZone();
+  showZone(false);
+  G.phase='draw';G.curP=0;
+  setSt('Your turn — tap Draw Tile.');
   renderAll();
 }
 
 function showMenu(){
   clearTimeout(G.claimTimer);
-  DR.active=false;
-  document.getElementById('dragGhost').style.display='none';
+  // clean up any active drag
+  cleanup();D.active=false;D.tileId=null;
   document.getElementById('drawReveal').classList.remove('active');
+  document.getElementById('discardZone').classList.remove('hot');
   document.getElementById('game').classList.remove('active');
   document.getElementById('menu').classList.add('active');
   hideModal();
