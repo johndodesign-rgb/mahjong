@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>麻將 Mahjong</title>
+<link rel="manifest" href="/mahjong/manifest.json">
+<meta name="theme-color" content="#1a120a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mahjong">
+<link rel="apple-touch-icon" href="/mahjong/icon-180.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/mahjong/icon-192.png">
+<link rel="apple-touch-icon" sizes="167x167" href="/mahjong/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/mahjong/icon-180.png">
+<script>if("serviceWorker"in navigator)navigator.serviceWorker.register("/mahjong/sw.js");</script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -766,7 +777,7 @@ function aiTurn(p){
     pl.hand=pl.hand.filter(t=>t.id!==d.id);
     G.discards.push({tile:d,by:p});G.lastDiscard=d;G.lastBy=p;G.phase='claim';
     setSt(`${WN[pl.seat]} discarded — Claim?`);renderAll();
-    G.claimTimer=setTimeout(()=>{if(G.phase==='claim')aiClaims();},2500);
+    G.claimTimer=G.practice?null:setTimeout(()=>{if(G.phase==="claim")aiClaims();},G.difficulty==="easy"?6000:G.difficulty==="medium"?4000:2500);
     renderActions();
   },800+Math.random()*400);
 }
@@ -785,7 +796,7 @@ function aiMeld(p,type,tile){
     pl.hand=pl.hand.filter(t=>t.id!==d.id);
     G.discards.push({tile:d,by:p});G.lastDiscard=d;G.lastBy=p;G.phase='claim';
     setSt(`${WN[pl.seat]} discarded — Claim?`);renderAll();
-    G.claimTimer=setTimeout(()=>{if(G.phase==='claim')aiClaims();},2500);
+    G.claimTimer=G.practice?null:setTimeout(()=>{if(G.phase==="claim")aiClaims();},G.difficulty==="easy"?6000:G.difficulty==="medium"?4000:2500);
     renderActions();
   },900);
 }
