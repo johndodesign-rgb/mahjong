@@ -69,7 +69,8 @@ body{font-family:'DM Mono',monospace;color:var(--text);display:flex;flex-directi
 .player-actions{display:flex;gap:6px;padding:4px 8px 8px;justify-content:center;flex-wrap:wrap;align-items:center;}
 
 /* TILES */
-.tile{width:38px;height:52px;background:var(--tile-bg);border:1.5px solid var(--tile-border);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;box-shadow:2px 2px 0 var(--tile-shadow);flex-shrink:0;position:relative;user-select:none;-webkit-user-select:none;touch-action:none;gap:2px;}
+.tile{width:38px;height:52px;background:var(--tile-bg);border:1.5px solid var(--tile-border);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:grab;box-shadow:2px 2px 0 var(--tile-shadow);flex-shrink:0;position:relative;user-select:none;-webkit-user-select:none;touch-action:none;gap:2px;}
+.tile:active{cursor:grabbing;}
 .tile-num{font-family:'Noto Serif TC',serif;font-size:13px;font-weight:900;line-height:1;}
 .tile-icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;}
 .tile-icon svg{width:100%;height:100%;}
@@ -376,151 +377,148 @@ function mkTile(tile,opts={}){
 }
 
 // ══════════════════════════════════════════
-// DRAG STATE — single source of truth
+// DRAG STATE — unified pointer (mouse + touch)
 // ══════════════════════════════════════════
 const D={
   active:false,
   tileId:null,
-  insertIdx:-1,   // where ghost slot appears
-  overZone:false, // is finger over discard zone
+  insertIdx:-1,
+  overZone:false,
 };
 
 function orderedHand(){
+  if(!G.players||!G.players[0])return[];
   const byId={};for(const t of G.players[0].hand)byId[t.id]=t;
   return G.order.filter(id=>byId[id]).map(id=>byId[id]);
 }
 
-// Called once per tile element creation
-function bindDrag(el,tile){
-  el.addEventListener('touchstart', onTouchStart.bind(null,el,tile), {passive:false});
+// Extract x/y from either mouse or touch event
+function evXY(e){
+  if(e.touches&&e.touches.length)return{x:e.touches[0].clientX,y:e.touches[0].clientY};
+  if(e.changedTouches&&e.changedTouches.length)return{x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY};
+  return{x:e.clientX,y:e.clientY};
 }
 
-function onTouchStart(el,tile,e){
-  // Only drag during discard phase on player's turn, OR always allow reorder
+function bindDrag(el,tile){
+  // Touch
+  el.addEventListener('touchstart',e=>onDragStart(el,tile,e),{passive:false});
+  // Mouse
+  el.addEventListener('mousedown',e=>{if(e.button===0)onDragStart(el,tile,e);});
+}
+
+function onDragStart(el,tile,e){
   D.active=true;
   D.tileId=tile.id;
   const ordered=orderedHand();
   D.insertIdx=ordered.findIndex(t=>t.id===tile.id);
   D.overZone=false;
 
-  const touch=e.touches[0];
-  buildGhost(tile,touch);
+  const{x,y}=evXY(e);
+  buildGhost(tile,x,y);
   el.classList.add('dragging');
   e.preventDefault();
 
-  // Bind move/end to document so they fire even if finger leaves element
-  document.addEventListener('touchmove',onTouchMove,{passive:false});
-  document.addEventListener('touchend',onTouchEnd,{passive:false});
-  document.addEventListener('touchcancel',onTouchCancel,{passive:false});
+  // Bind to document so events fire anywhere on screen
+  document.addEventListener('touchmove',onDragMove,{passive:false});
+  document.addEventListener('touchend',onDragEnd,{passive:false});
+  document.addEventListener('touchcancel',onDragCancel,{passive:false});
+  document.addEventListener('mousemove',onDragMove);
+  document.addEventListener('mouseup',onDragEnd);
 }
 
-function onTouchMove(e){
+function onDragMove(e){
   if(!D.active)return;
-  const touch=e.touches[0];
+  const{x,y}=evXY(e);
 
   // Move ghost
   const gh=document.getElementById('dragGhost');
-  gh.style.left=(touch.clientX-19)+'px';
-  gh.style.top=(touch.clientY-60)+'px';
+  gh.style.left=(x-19)+'px';
+  gh.style.top=(y-60)+'px';
 
   // Check discard zone
   const zone=document.getElementById('discardZone');
-  const zoneVisible=!zone.classList.contains('hidden');
-  if(zoneVisible){
+  if(!zone.classList.contains('hidden')){
     const zr=zone.getBoundingClientRect();
-    D.overZone=touch.clientX>=zr.left&&touch.clientX<=zr.right&&touch.clientY>=zr.top&&touch.clientY<=zr.bottom;
+    D.overZone=x>=zr.left&&x<=zr.right&&y>=zr.top&&y<=zr.bottom;
     zone.classList.toggle('hot',D.overZone);
   } else {
     D.overZone=false;
   }
 
-  // Reorder: find insert position from tile positions
+  // Find insert position
   const handDiv=document.getElementById('playerHand');
   const nonDragging=[...handDiv.querySelectorAll('.tile:not(.dragging):not(.ghost-slot)')];
   const ordered=orderedHand();
   const fromIdx=ordered.findIndex(t=>t.id===D.tileId);
-  let newInsert=fromIdx; // default: no change
+  let newInsert=fromIdx;
 
   if(nonDragging.length>0){
-    // Find which gap the finger is in
     let placed=false;
     for(let i=0;i<nonDragging.length;i++){
       const r=nonDragging[i].getBoundingClientRect();
-      const mid=r.left+r.width/2;
-      if(touch.clientX<mid){
-        // Insert before child i (in non-dragging list)
-        // Map back: non-dragging[i] corresponds to ordered index, skipping fromIdx
-        const nonDragOrdered=ordered.filter((_,idx)=>idx!==fromIdx);
+      if(x<r.left+r.width/2){
         const targetTile=nonDragging[i].__tileId;
         const targetIdx=ordered.findIndex(t=>t.id===targetTile);
         newInsert=targetIdx===-1?fromIdx:targetIdx;
         placed=true;break;
       }
     }
-    if(!placed){
-      // Past last tile → insert at end
-      newInsert=ordered.length-1;
-    }
+    if(!placed)newInsert=ordered.length-1;
   }
 
-  if(newInsert!==D.insertIdx){
-    D.insertIdx=newInsert;
-    renderHandWhileDragging();
-  }
-
-  e.preventDefault();
+  if(newInsert!==D.insertIdx){D.insertIdx=newInsert;renderHandWhileDragging();}
+  if(e.cancelable)e.preventDefault();
 }
 
-function onTouchEnd(e){
+function onDragEnd(e){
   if(!D.active)return;
-  cleanup();
+  dragCleanup();
 
   const zone=document.getElementById('discardZone');
   zone.classList.remove('hot');
 
   if(D.overZone&&G.phase==='discard'&&G.curP===0){
-    // Drop onto discard zone
     const tile=G.players[0].hand.find(t=>t.id===D.tileId);
     D.active=false;D.tileId=null;
     if(tile)doDiscard(tile);
   } else {
-    // Reorder
     const fromIdx=G.order.indexOf(D.tileId);
     const toIdx=D.insertIdx;
     if(fromIdx!==-1&&toIdx!==-1&&fromIdx!==toIdx){
       G.order.splice(fromIdx,1);
-      const adjusted=toIdx>fromIdx?toIdx-1:toIdx;
-      G.order.splice(adjusted,0,D.tileId);
+      G.order.splice(toIdx>fromIdx?toIdx-1:toIdx,0,D.tileId);
     }
     D.active=false;D.tileId=null;
     renderPlayerHand();
   }
-  e.preventDefault();
+  if(e.cancelable)e.preventDefault();
 }
 
-function onTouchCancel(){
-  cleanup();
+function onDragCancel(){
+  dragCleanup();
   D.active=false;D.tileId=null;
   document.getElementById('discardZone').classList.remove('hot');
   renderPlayerHand();
 }
 
-function cleanup(){
-  document.removeEventListener('touchmove',onTouchMove);
-  document.removeEventListener('touchend',onTouchEnd);
-  document.removeEventListener('touchcancel',onTouchCancel);
+function dragCleanup(){
+  document.removeEventListener('touchmove',onDragMove);
+  document.removeEventListener('touchend',onDragEnd);
+  document.removeEventListener('touchcancel',onDragCancel);
+  document.removeEventListener('mousemove',onDragMove);
+  document.removeEventListener('mouseup',onDragEnd);
   document.getElementById('dragGhost').style.display='none';
 }
 
-function buildGhost(tile,touch){
+function buildGhost(tile,x,y){
   const gh=document.getElementById('dragGhost');
   gh.innerHTML='';
   const n=document.createElement('div');n.className='tile-num';n.textContent=getNum(tile);n.style.color=getColor(tile);
   const ic=document.createElement('div');ic.className='tile-icon';ic.innerHTML=getSVG(tile);
   gh.appendChild(n);gh.appendChild(ic);
   gh.style.display='flex';
-  gh.style.left=(touch.clientX-19)+'px';
-  gh.style.top=(touch.clientY-60)+'px';
+  gh.style.left=(x-19)+'px';
+  gh.style.top=(y-60)+'px';
 }
 
 function renderHandWhileDragging(){
@@ -619,7 +617,7 @@ function renderActions(){
     return;
   }
   if(G.curP===0){
-    if(G.phase==='draw'){addBtn(acts,'Draw Tile','act-draw',()=>humanDraw());}
+    if(G.phase==='draw'){addBtn(acts,'Draw Tile','act-draw',()=>humanDraw());const h=document.createElement('div');h.style.cssText='font-size:10px;color:var(--dim);text-align:center;';h.textContent='Drag tiles to rearrange';acts.appendChild(h);}
     if(G.phase==='discard'){
       if(canWin(pl.hand))addBtn(acts,'Mahjong! 🀄','act-mahjong',()=>humanWin(null,true));
       const h=document.createElement('div');
@@ -907,7 +905,7 @@ function startGame(practice){
 function showMenu(){
   clearTimeout(G.claimTimer);
   // clean up any active drag
-  cleanup();D.active=false;D.tileId=null;
+  dragCleanup();D.active=false;D.tileId=null;
   document.getElementById('drawReveal').classList.remove('active');
   document.getElementById('discardZone').classList.remove('hot');
   document.getElementById('game').classList.remove('active');
