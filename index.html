@@ -127,26 +127,59 @@ body{font-family:'DM Mono',monospace;color:var(--text);display:flex;flex-directi
 .act-pass{background:rgba(255,255,255,0.1);color:var(--dim);}
 .act-mahjong{background:var(--red);color:#fff;font-weight:700;animation:glow 1s ease-in-out infinite alternate;}
 @keyframes glow{from{box-shadow:0 0 6px rgba(192,57,43,0.4);}to{box-shadow:0 0 20px rgba(192,57,43,1);}}
+/* HARD MODE — tile claim animation */
+@keyframes slideIntoHand{
+  0%{transform:translateY(-180px) scale(1.15);opacity:1;}
+  60%{transform:translateY(20px) scale(0.95);opacity:1;}
+  100%{transform:translateY(0) scale(1);opacity:1;}
+}
+.tile.claiming{animation:slideIntoHand 0.45s cubic-bezier(0.22,1,0.36,1) forwards;}
+
+/* Hard mode discard tile — clickable glow */
+.tile.dt.claimable{
+  cursor:pointer;
+  border-color:var(--gold);
+  box-shadow:0 0 12px rgba(212,168,67,0.8),1px 1px 0 var(--tile-shadow);
+  animation:claimPulse 0.8s ease-in-out infinite alternate;
+}
+@keyframes claimPulse{
+  from{box-shadow:0 0 8px rgba(212,168,67,0.6),1px 1px 0 var(--tile-shadow);}
+  to{box-shadow:0 0 18px rgba(212,168,67,1),0 0 30px rgba(212,168,67,0.4),1px 1px 0 var(--tile-shadow);}
+}
+
+/* Meld confirm area */
+.meld-confirm{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  padding:12px 16px;
+  background:rgba(0,0,0,0.4);
+  border-top:1px solid rgba(212,168,67,0.2);
+  flex-shrink:0;
+}
+.meld-confirm-label{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);opacity:0.8;}
+.meld-confirm-tiles{display:flex;gap:6px;align-items:center;justify-content:center;}
+.meld-confirm-actions{display:flex;gap:8px;}
+.meld-sep{font-size:18px;color:var(--dim);margin:0 4px;}
+
 
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.82);display:none;align-items:center;justify-content:center;z-index:300;padding:0;}
 .modal-overlay.active{display:flex;}
 .modal{background:#0d1f12;border:none;border-radius:0;padding:0;width:100%;height:100%;max-width:100%;max-height:100%;overflow-y:auto;display:flex;flex-direction:column;}
-.modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid rgba(212,168,67,0.2);flex-shrink:0;}
-.modal h2{font-family:'Noto Serif TC',serif;font-size:22px;color:var(--gold);margin:0;}
-.modal-close{background:transparent;border:none;color:var(--dim);font-size:22px;cursor:pointer;padding:0 2px;line-height:1;}
-.modal-body{font-size:14px;line-height:2;color:var(--dim);padding:20px;flex:1;}
-.modal-body p{margin-bottom:6px;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid rgba(212,168,67,0.2);flex-shrink:0;}
+.modal h2{font-family:'Noto Serif TC',serif;font-size:26px;color:var(--gold);margin:0;}
+.modal-close{background:transparent;border:none;color:var(--text);font-size:30px;cursor:pointer;padding:0 4px;line-height:1;opacity:0.8;}
+.modal-body{font-size:17px;line-height:2.1;color:var(--text);padding:24px;flex:1;}
+.modal-body p{margin-bottom:8px;} .modal-body strong{color:var(--gold);}
 .modal-body br{display:block;margin-bottom:8px;content:'';}
-.modal-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:14px;}
+.modal-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:16px;}
 .modal-row:last-child{border-bottom:none;}
-.modal-val{color:var(--gold);font-family:'Noto Serif TC',serif;font-size:16px;}
-.modal-btns{display:flex;gap:8px;flex-direction:column;padding:16px 20px;border-top:1px solid rgba(212,168,67,0.15);flex-shrink:0;}
+.modal-val{color:var(--gold);font-family:'Noto Serif TC',serif;font-size:18px;}
+.modal-btns{display:flex;gap:8px;flex-direction:column;padding:20px 24px;border-top:1px solid rgba(212,168,67,0.15);flex-shrink:0;}
 
 /* HINT */
-.hint-panel{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.9);border-top:1px solid rgba(212,168,67,0.3);padding:8px 12px;font-size:10px;color:var(--dim);line-height:1.6;z-index:5;display:none;}
+.hint-panel{position:relative;background:rgba(0,0,0,0.92);border-top:1px solid rgba(212,168,67,0.3);padding:12px 16px;font-size:14px;color:var(--text);line-height:1.8;z-index:5;display:none;flex-shrink:0;}
 .hint-panel.visible{display:block;}
-.hint-title{color:var(--gold);font-size:10px;letter-spacing:0.15em;margin-bottom:4px;text-transform:uppercase;}
+.hint-title{color:var(--gold);font-size:13px;letter-spacing:0.15em;text-transform:uppercase;}
 </style>
 </head>
 <body>
@@ -211,13 +244,13 @@ body{font-family:'DM Mono',monospace;color:var(--text);display:flex;flex-directi
     <div class="player-hand-wrap">
       <div class="player-hand" id="playerHand"></div>
     </div>
-  </div>
-  <div class="hint-panel" id="hintPanel">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-      <div class="hint-title" style="margin-bottom:0;">💡 Practice Hint</div>
-      <button onclick="toggleHint()" style="background:transparent;border:none;color:var(--dim);font-size:16px;cursor:pointer;padding:0 2px;line-height:1;">✕</button>
+    <div class="hint-panel" id="hintPanel">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+        <div class="hint-title">💡 Practice Hint</div>
+        <button onclick="toggleHint()" style="background:transparent;border:none;color:var(--text);font-size:24px;cursor:pointer;padding:0 4px;line-height:1;">✕</button>
+      </div>
+      <div id="hintText">Tap Draw Tile to begin.</div>
     </div>
-    <div id="hintText">Tap Draw Tile to begin.</div>
   </div>
 </div>
 
@@ -420,6 +453,126 @@ function shantenSets(tiles){
   best=Math.min(best,2+shantenSets(rest));
 
   return best;
+}
+
+
+// ══════════════════════════════════════════
+// HARD MODE — TILE CLICK CLAIM
+// ══════════════════════════════════════════
+function hardModeTileClaim(tile){
+  clearTimeout(G.claimTimer);
+  const pl=G.players[0];
+
+  // Determine what claim is available, priority: Win > Pung > Chow
+  const cW=canWin([...pl.hand,tile]);
+  const cP=canPung(pl.hand,tile);
+  const cC=G.lastBy===3&&canChow(pl.hand,tile);
+
+  if(cW){
+    // Animate tile sliding in then declare win
+    animateTileClaim(tile,()=>humanWin(tile,false));
+    return;
+  }
+
+  if(cP){
+    // Find the matching tiles in hand
+    const matching=pl.hand.filter(t=>same(t,tile)).slice(0,2);
+    showMeldConfirm(tile,[...matching],'pung');
+    return;
+  }
+
+  if(cC){
+    // Find the chow tiles
+    const{suit,num}=tile.value;
+    const st=pl.hand.filter(t=>t.type==='suit'&&t.value.suit===suit);
+    let ct=null;
+    for(let s=Math.max(1,num-2);s<=Math.min(7,num);s++){
+      const need=[s,s+1,s+2].filter(n=>n!==num);
+      const found=need.map(n=>st.find(t=>t.value.num===n)).filter(Boolean);
+      if(found.length===2){ct=found;break;}
+    }
+    if(ct) showMeldConfirm(tile,ct,'chow');
+    return;
+  }
+}
+
+// Show the meld tiles in the discard zone area for confirmation
+function showMeldConfirm(claimedTile,handTiles,type){
+  // Animate the claimed tile visually
+  const pool=document.getElementById('discardPool');
+  const lastTileEl=pool.lastElementChild;
+  if(lastTileEl) lastTileEl.classList.add('claiming');
+
+  setTimeout(()=>{
+    // Build confirm UI in the actions area
+    const acts=document.getElementById('playerActions');
+    acts.innerHTML='';
+
+    const wrap=document.createElement('div');
+    wrap.className='meld-confirm';
+
+    const lbl=document.createElement('div');
+    lbl.className='meld-confirm-label';
+    lbl.textContent=`Confirm ${type} — lay down:`;
+    wrap.appendChild(lbl);
+
+    // Show the meld tiles
+    const tilesRow=document.createElement('div');
+    tilesRow.className='meld-confirm-tiles';
+
+    // Sort: claimed tile + hand tiles, sorted by num if chow
+    const allTiles=[claimedTile,...handTiles];
+    if(type==='chow') allTiles.sort((a,b)=>a.value.num-b.value.num);
+
+    for(const t of allTiles){
+      const el=mkTile(t,{});
+      el.style.boxShadow=same(t,claimedTile)&&type!=='chow'?
+        '0 0 10px rgba(212,168,67,0.8),2px 2px 0 var(--tile-shadow)':
+        '2px 2px 0 var(--tile-shadow)';
+      // Claimed tile gets gold highlight
+      if(t.id===claimedTile.id) el.style.borderColor='var(--gold)';
+      tilesRow.appendChild(el);
+    }
+    wrap.appendChild(tilesRow);
+
+    // Confirm / cancel
+    const btnRow=document.createElement('div');
+    btnRow.className='meld-confirm-actions';
+
+    const confirmBtn=document.createElement('button');
+    confirmBtn.className='act-btn act-claim';
+    confirmBtn.textContent='✓ Confirm';
+    confirmBtn.onclick=()=>{
+      humanClaim(type,claimedTile);
+    };
+
+    const cancelBtn=document.createElement('button');
+    cancelBtn.className='act-btn act-pass';
+    cancelBtn.textContent='✕ Cancel';
+    cancelBtn.onclick=()=>{
+      // Put it back — re-render normally
+      renderAll();
+      // Re-arm the timer for remaining time
+      G.claimTimer=setTimeout(()=>{if(G.phase==='claim')aiClaims();},1500);
+    };
+
+    btnRow.appendChild(confirmBtn);
+    btnRow.appendChild(cancelBtn);
+    wrap.appendChild(btnRow);
+    acts.appendChild(wrap);
+  }, 350); // after animation
+}
+
+// Animate tile flying from discard pool toward hand
+function animateTileClaim(tile,callback){
+  const pool=document.getElementById('discardPool');
+  const lastTileEl=pool.lastElementChild;
+  if(lastTileEl){
+    lastTileEl.classList.add('claiming');
+    setTimeout(callback,450);
+  } else {
+    callback();
+  }
 }
 
 // ══════════════════════════════════════════
@@ -815,8 +968,22 @@ function renderAI(){
 
 function renderDiscards(){
   const pool=document.getElementById('discardPool');pool.innerHTML='';
+  const isHardClaim=G.difficulty==='hard'&&G.phase==='claim'&&G.lastDiscard&&G.curP===0;
   for(let i=0;i<G.discards.length;i++){
-    pool.appendChild(mkTile(G.discards[i].tile,{dt:true,ld:i===G.discards.length-1}));
+    const isLast=i===G.discards.length-1;
+    const el=mkTile(G.discards[i].tile,{dt:true,ld:isLast});
+    if(isLast&&isHardClaim){
+      // Check if player is eligible to claim
+      const t=G.discards[i].tile;
+      const pl=G.players[0];
+      const eligible=canWin([...pl.hand,t])||canPung(pl.hand,t)||(G.lastBy===3&&canChow(pl.hand,t));
+      if(eligible){
+        el.classList.add('claimable');
+        el.onclick=()=>hardModeTileClaim(t);
+        el.title='Click to claim';
+      }
+    }
+    pool.appendChild(el);
   }
   if(G.discards.length)pool.scrollTop=pool.scrollHeight;
 }
@@ -851,6 +1018,18 @@ function renderActions(){
   if(G.phase==='claim'&&G.lastDiscard){
     const t=G.lastDiscard;
     const cW=canWin([...pl.hand,t]),cP=canPung(pl.hand,t),cC=G.lastBy===3&&canChow(pl.hand,t);
+    if(G.difficulty==='hard'){
+      // Hard mode: click the tile in the discard pool — just show Pass
+      const eligible=cW||cP||cC;
+      if(eligible){
+        const hint=document.createElement('div');
+        hint.style.cssText='font-size:11px;color:var(--gold);letter-spacing:0.1em;';
+        hint.textContent='↑ Click the glowing tile to claim';
+        acts.appendChild(hint);
+      }
+      addBtn(acts,'Pass','act-pass',()=>passClaim());
+      return;
+    }
     if(cW)addBtn(acts,'Mahjong! 🀄','act-mahjong',()=>humanWin(t,false));
     if(cP)addBtn(acts,'Pung','act-claim',()=>humanClaim('pung',t));
     if(cC)addBtn(acts,'Chow','act-claim',()=>humanClaim('chow',t));
@@ -1022,7 +1201,7 @@ function aiTurn(p){
     pl.hand=pl.hand.filter(t=>t.id!==d.id);
     G.discards.push({tile:d,by:p});G.lastDiscard=d;G.lastBy=p;G.phase='claim';
     setSt(`${WN[pl.seat]} discarded — Claim?`);renderAll();
-    G.claimTimer=G.practice?null:setTimeout(()=>{if(G.phase==="claim")aiClaims();},G.difficulty==="easy"?6000:G.difficulty==="medium"?4000:2500);
+    G.claimTimer=G.practice?null:setTimeout(()=>{if(G.phase==="claim")aiClaims();},G.difficulty==="easy"?6000:G.difficulty==="medium"?4000:3500);
     renderActions();
   },thinkTime);
 }
@@ -1055,7 +1234,7 @@ function aiMeld(p,type,tile){
     pl.hand=pl.hand.filter(t=>t.id!==d.id);
     G.discards.push({tile:d,by:p});G.lastDiscard=d;G.lastBy=p;G.phase='claim';
     setSt(`${WN[pl.seat]} discarded — Claim?`);renderAll();
-    G.claimTimer=G.practice?null:setTimeout(()=>{if(G.phase==="claim")aiClaims();},G.difficulty==="easy"?6000:G.difficulty==="medium"?4000:2500);
+    G.claimTimer=G.practice?null:setTimeout(()=>{if(G.phase==="claim")aiClaims();},G.difficulty==="easy"?6000:G.difficulty==="medium"?4000:3500);
     renderActions();
   },900);
 }
