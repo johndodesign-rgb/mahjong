@@ -56,28 +56,36 @@ body{font-family:'DM Mono',monospace;color:var(--text);display:flex;flex-directi
 .score-disp{font-family:'Noto Serif TC',serif;font-size:14px;color:var(--gold);}
 .topbar-right{display:flex;gap:8px;}
 .icon-btn{background:transparent;border:none;color:var(--dim);font-size:18px;cursor:pointer;padding:4px;line-height:1;}
-.ai-area{display:flex;flex-direction:column;gap:4px;padding:6px 8px;flex-shrink:0;}
-.ai-row{display:flex;align-items:center;gap:6px;}
-.ai-label{font-size:9px;letter-spacing:0.1em;color:var(--dim);width:44px;flex-shrink:0;}
-.ai-tiles{display:flex;gap:2px;flex-wrap:nowrap;overflow:hidden;}
-.status{padding:4px 12px;font-size:10px;color:var(--gold);letter-spacing:0.1em;text-align:center;min-height:22px;background:rgba(0,0,0,0.2);flex-shrink:0;}
-.center-area{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:6px 8px;min-height:0;}
-.discard-pool-label{font-size:9px;color:var(--dim);letter-spacing:0.1em;align-self:flex-start;}
-.discard-pool{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;max-height:110px;overflow-y:auto;padding:8px;background:rgba(0,0,0,0.2);border-radius:6px;width:100%;}
 
-/* DISCARD ZONE */
-.discard-zone{width:100%;min-height:60px;border:2px dashed rgba(192,57,43,0.4);border-radius:8px;display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(192,57,43,0.05);transition:all 0.18s;flex-shrink:0;}
+/* AI — opposite player across top, two side players flanking */
+.ai-area{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;padding:6px 8px;flex-shrink:0;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(255,255,255,0.05);}
+.ai-row{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 6px;background:rgba(0,0,0,0.15);border-radius:6px;}
+.ai-label{font-size:9px;letter-spacing:0.1em;color:var(--dim);text-align:center;}
+.ai-tiles{display:flex;gap:2px;flex-wrap:wrap;justify-content:center;max-width:100%;}
+
+.status{padding:5px 12px;font-size:11px;color:var(--gold);letter-spacing:0.08em;text-align:center;min-height:24px;background:rgba(0,0,0,0.3);border-bottom:1px solid rgba(255,255,255,0.04);flex-shrink:0;}
+
+/* CENTER — fills all available space */
+.center-area{flex:1;display:flex;flex-direction:column;align-items:stretch;gap:0;padding:0;min-height:0;position:relative;}
+.discard-pool-label{font-size:9px;color:var(--dim);letter-spacing:0.1em;padding:6px 10px 2px;opacity:0.6;}
+.discard-pool{flex:1;display:flex;flex-wrap:wrap;gap:4px;justify-content:center;align-content:flex-start;overflow-y:auto;padding:8px 10px;min-height:0;}
+
+/* DISCARD ZONE — sits above player hand, full width */
+.discard-zone{width:100%;min-height:52px;border-top:2px dashed rgba(192,57,43,0.35);border-bottom:2px dashed rgba(192,57,43,0.35);display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(192,57,43,0.04);transition:all 0.18s;flex-shrink:0;}
 .discard-zone.hidden{display:none;}
-.discard-zone.hot{border-color:var(--red);background:rgba(192,57,43,0.18);box-shadow:0 0 18px rgba(192,57,43,0.3) inset;}
-.dz-icon{font-size:24px;opacity:0.4;pointer-events:none;}
-.dz-label{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(192,57,43,0.6);pointer-events:none;}
+.discard-zone.hot{border-color:var(--red);background:rgba(192,57,43,0.15);box-shadow:0 0 20px rgba(192,57,43,0.25) inset;}
+.dz-icon{font-size:20px;opacity:0.35;pointer-events:none;}
+.dz-label{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(192,57,43,0.55);pointer-events:none;}
 
-/* PLAYER */
-.player-area{flex-shrink:0;background:rgba(0,0,0,0.3);border-top:1px solid rgba(255,255,255,0.08);}
-.player-melds{display:flex;gap:3px;padding:4px 8px;min-height:32px;flex-wrap:wrap;align-items:center;}
-.player-hand-wrap{padding:4px 4px 4px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
-.player-hand{display:flex;gap:3px;padding:2px 4px;min-width:max-content;}
-.player-actions{display:flex;gap:6px;padding:4px 8px 8px;justify-content:center;flex-wrap:wrap;align-items:center;}
+/* PLAYER — compact, anchored bottom */
+.player-area{flex-shrink:0;background:rgba(0,0,0,0.35);border-top:1px solid rgba(255,255,255,0.1);}
+.player-melds{display:flex;gap:3px;padding:5px 10px;min-height:30px;flex-wrap:wrap;align-items:center;border-bottom:1px solid rgba(255,255,255,0.04);}
+.player-hand-wrap{padding:6px 6px 4px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;display:flex;justify-content:center;}
+.player-hand-wrap::-webkit-scrollbar{display:none;}
+.player-hand{display:flex;gap:4px;padding:2px 4px;min-width:max-content;}
+
+/* Actions live on the felt, above the dark player panel */
+.player-actions{display:flex;gap:8px;padding:8px 10px;justify-content:center;flex-wrap:wrap;align-items:center;background:transparent;}
 
 /* TILES */
 .tile{width:38px;height:52px;background:var(--tile-bg);border:1.5px solid var(--tile-border);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:grab;box-shadow:2px 2px 0 var(--tile-shadow);flex-shrink:0;position:relative;user-select:none;-webkit-user-select:none;touch-action:none;gap:2px;}
@@ -91,8 +99,8 @@ body{font-family:'DM Mono',monospace;color:var(--text);display:flex;flex-directi
 .tile.small{width:25px;height:34px;border-radius:3px;box-shadow:1px 1px 0 var(--tile-shadow);gap:1px;}
 .tile.small .tile-num{font-size:9px;} .tile.small .tile-icon{width:13px;height:13px;}
 .tile.small.face-down::after{inset:2px;}
-.tile.dt{width:27px;height:37px;border-radius:3px;cursor:default;box-shadow:1px 1px 0 var(--tile-shadow);gap:1px;}
-.tile.dt .tile-num{font-size:10px;} .tile.dt .tile-icon{width:14px;height:14px;}
+.tile.dt{width:32px;height:44px;border-radius:4px;cursor:default;box-shadow:1px 1px 0 var(--tile-shadow);gap:1px;}
+.tile.dt .tile-num{font-size:12px;} .tile.dt .tile-icon{width:16px;height:16px;}
 .tile.ld{border-color:var(--gold);box-shadow:0 0 8px rgba(212,168,67,0.7),1px 1px 0 var(--tile-shadow);}
 .tile.melded{opacity:0.85;}
 .tile.dragging{opacity:0.3;}
@@ -121,15 +129,19 @@ body{font-family:'DM Mono',monospace;color:var(--text);display:flex;flex-directi
 @keyframes glow{from{box-shadow:0 0 6px rgba(192,57,43,0.4);}to{box-shadow:0 0 20px rgba(192,57,43,1);}}
 
 /* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.82);display:none;align-items:center;justify-content:center;z-index:300;padding:20px;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.82);display:none;align-items:center;justify-content:center;z-index:300;padding:0;}
 .modal-overlay.active{display:flex;}
-.modal{background:#0d1f12;border:1px solid rgba(212,168,67,0.3);border-radius:8px;padding:24px;width:100%;max-width:340px;max-height:80vh;overflow-y:auto;}
-.modal h2{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--gold);margin-bottom:16px;text-align:center;}
-.modal-body{font-size:12px;line-height:1.9;color:var(--dim);margin-bottom:20px;}
-.modal-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:12px;}
+.modal{background:#0d1f12;border:none;border-radius:0;padding:0;width:100%;height:100%;max-width:100%;max-height:100%;overflow-y:auto;display:flex;flex-direction:column;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid rgba(212,168,67,0.2);flex-shrink:0;}
+.modal h2{font-family:'Noto Serif TC',serif;font-size:22px;color:var(--gold);margin:0;}
+.modal-close{background:transparent;border:none;color:var(--dim);font-size:22px;cursor:pointer;padding:0 2px;line-height:1;}
+.modal-body{font-size:14px;line-height:2;color:var(--dim);padding:20px;flex:1;}
+.modal-body p{margin-bottom:6px;}
+.modal-body br{display:block;margin-bottom:8px;content:'';}
+.modal-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:14px;}
 .modal-row:last-child{border-bottom:none;}
-.modal-val{color:var(--gold);font-family:'Noto Serif TC',serif;font-size:14px;}
-.modal-btns{display:flex;gap:8px;flex-direction:column;}
+.modal-val{color:var(--gold);font-family:'Noto Serif TC',serif;font-size:16px;}
+.modal-btns{display:flex;gap:8px;flex-direction:column;padding:16px 20px;border-top:1px solid rgba(212,168,67,0.15);flex-shrink:0;}
 
 /* HINT */
 .hint-panel{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.9);border-top:1px solid rgba(212,168,67,0.3);padding:8px 12px;font-size:10px;color:var(--dim);line-height:1.6;z-index:5;display:none;}
@@ -188,20 +200,23 @@ body{font-family:'DM Mono',monospace;color:var(--text);display:flex;flex-directi
   <div class="center-area">
     <div class="discard-pool-label">DISCARD POOL</div>
     <div class="discard-pool" id="discardPool"></div>
-    <div class="discard-zone hidden" id="discardZone">
-      <div class="dz-icon">🗑</div>
-      <div class="dz-label">Drag tile here to discard</div>
-    </div>
   </div>
+  <div class="discard-zone hidden" id="discardZone">
+    <div class="dz-icon">🗑</div>
+    <div class="dz-label">Drag tile here to discard</div>
+  </div>
+  <div class="player-actions" id="playerActions"></div>
   <div class="player-area">
     <div class="player-melds" id="playerMelds"></div>
     <div class="player-hand-wrap">
       <div class="player-hand" id="playerHand"></div>
     </div>
-    <div class="player-actions" id="playerActions"></div>
   </div>
   <div class="hint-panel" id="hintPanel">
-    <div class="hint-title">💡 Practice Hint</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+      <div class="hint-title" style="margin-bottom:0;">💡 Practice Hint</div>
+      <button onclick="toggleHint()" style="background:transparent;border:none;color:var(--dim);font-size:16px;cursor:pointer;padding:0 2px;line-height:1;">✕</button>
+    </div>
     <div id="hintText">Tap Draw Tile to begin.</div>
   </div>
 </div>
@@ -209,7 +224,10 @@ body{font-family:'DM Mono',monospace;color:var(--text);display:flex;flex-directi
 <!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
-    <h2 id="modalTitle"></h2>
+    <div class="modal-header">
+      <h2 id="modalTitle"></h2>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
     <div class="modal-body" id="modalBody"></div>
     <div class="modal-btns" id="modalBtns"></div>
   </div>
@@ -308,27 +326,239 @@ function score(hand,bonuses,selfDraw,concealed){
 }
 
 // ══════════════════════════════════════════
-// AI
+// DISCARD TRACKING
 // ══════════════════════════════════════════
-function aiPickDiscard(hand,diff){
-  const scored=hand.map(tile=>{
-    let s=utility(tile,hand);
-    if(diff==='easy')s+=(Math.random()-.5)*5;
-    else if(diff==='medium')s+=(Math.random()-.5)*2;
-    return{tile,s};
+
+// Returns count of how many of a tile key have been discarded
+function discardedCount(key){
+  return G.discards.filter(d=>tKey(d.tile)===key).length;
+}
+
+// Is this tile "dead" — too many discarded to complete a set?
+function tileIsDead(tile){
+  return discardedCount(tKey(tile))>=3;
+}
+
+// How many of this tile key are still live (not discarded)
+function liveTilesRemaining(key){
+  return 4 - discardedCount(key);
+}
+
+// Is a chow still achievable given discards?
+function chowIsLive(suit,nums){
+  return nums.every(n=>{
+    const key=`${suit}${n}`;
+    return liveTilesRemaining(key)>0;
   });
+}
+
+// ══════════════════════════════════════════
+// SHANTEN CALCULATOR
+// ══════════════════════════════════════════
+// Returns how many tiles away from winning (-1 = already winning)
+// Uses standard shanten formula for regular hands
+
+function shanten(hand){
+  const tiles=[...hand].sort((a,b)=>tKey(a).localeCompare(tKey(b)));
+  return shantenRecursive(tiles,false);
+}
+
+function shantenRecursive(tiles,hasPair){
+  // Base: empty hand
+  if(tiles.length===0) return hasPair ? -1 : 0; // -1=win, 0=need pair
+
+  let best=8; // worst case
+
+  // Try using first tile as part of pair
+  if(!hasPair){
+    const pairIdx=tiles.findIndex((t,i)=>i>0&&same(t,tiles[i-1]));
+    if(pairIdx>=0){
+      const rest=tiles.filter((_,i)=>i!==pairIdx&&i!==pairIdx-1);
+      const s=shantenRecursive(rest,true);
+      best=Math.min(best,s);
+    }
+    // No pair found yet — count as needing one more
+    best=Math.min(best,shantenSets(tiles)+1);
+  } else {
+    best=Math.min(best,shantenSets(tiles));
+  }
+  return best;
+}
+
+function shantenSets(tiles){
+  if(tiles.length===0)return -1;
+  const t=tiles[0],rest=tiles.slice(1);
+  let best=tiles.length; // worst: each tile isolated = length/3 sets needed *2 shanten each
+
+  // Try pung
+  const p1=rest.findIndex(x=>same(x,t));
+  if(p1>=0){
+    const r2=[...rest];r2.splice(p1,1);
+    const p2=r2.findIndex(x=>same(x,t));
+    if(p2>=0){r2.splice(p2,1);best=Math.min(best,shantenSets(r2));}
+    // Partial pung (pair used as set start) — 1 away
+    best=Math.min(best,1+shantenSets(r2.filter((_,i)=>i!==p1)));
+  }
+
+  // Try chow
+  if(t.type==='suit'){
+    const{suit,num}=t.value;
+    const i1=rest.findIndex(x=>x.type==='suit'&&x.value.suit===suit&&x.value.num===num+1);
+    if(i1>=0){
+      const r2=[...rest];r2.splice(i1,1);
+      const i2=r2.findIndex(x=>x.type==='suit'&&x.value.suit===suit&&x.value.num===num+2);
+      if(i2>=0){r2.splice(i2,1);best=Math.min(best,shantenSets(r2));}
+      // Partial chow (2-sided wait) — 1 away
+      best=Math.min(best,1+shantenSets(r2));
+    }
+    // Kanchan (middle wait: num, num+2)
+    const i3=rest.findIndex(x=>x.type==='suit'&&x.value.suit===suit&&x.value.num===num+2);
+    if(i3>=0){const r2=[...rest];r2.splice(i3,1);best=Math.min(best,1+shantenSets(r2));}
+  }
+
+  // Skip tile (isolated — costs 2 shanten to make a set from nothing)
+  best=Math.min(best,2+shantenSets(rest));
+
+  return best;
+}
+
+// ══════════════════════════════════════════
+// AI — DIFFICULTY GATED
+// ══════════════════════════════════════════
+
+// EASY: plays its own hand with no awareness, random mistakes
+// MEDIUM: shanten-based discard, basic discard pool awareness
+// HARD: shanten + discard tracking + defensive play + concealment decisions
+
+function aiPickDiscard(hand,diff,playerIdx){
+  if(diff==='easy') return aiDiscardEasy(hand);
+  if(diff==='medium') return aiDiscardMedium(hand);
+  return aiDiscardHard(hand,playerIdx);
+}
+
+// Easy: old utility score + high randomness
+function aiDiscardEasy(hand){
+  const scored=hand.map(tile=>({
+    tile,
+    s: utilityBasic(tile,hand) + (Math.random()-.5)*6
+  }));
   return scored.sort((a,b)=>a.s-b.s)[0].tile;
 }
-function utility(tile,hand){
-  let s=0;const cnt=hand.filter(t=>same(t,tile)).length;
+
+// Medium: shanten-based, checks if tile is dead in discard pool
+function aiDiscardMedium(hand){
+  let bestTile=null,bestShanten=999;
+  for(const tile of hand){
+    const rest=hand.filter(t=>t.id!==tile.id);
+    let s=shanten(rest);
+    // Prefer discarding tiles that are dead in the pool (safe)
+    if(tileIsDead(tile)) s-=1;
+    // Small randomness
+    s+=(Math.random()-.5)*0.8;
+    if(s<bestShanten){bestShanten=s;bestTile=tile;}
+  }
+  return bestTile||hand[0];
+}
+
+// Hard: shanten + discard awareness + defensive reads + concealment value
+function aiDiscardHard(hand,playerIdx){
+  let bestTile=null,bestScore=999;
+
+  // Assess danger from each opponent
+  const dangerKeys=getDangerKeys(playerIdx);
+
+  for(const tile of hand){
+    const rest=hand.filter(t=>t.id!==tile.id);
+    let s=shanten(rest);
+
+    // Dead tiles are safe to discard — actively prefer them
+    if(tileIsDead(tile)) s-=2;
+
+    // Dangerous tiles (opponents seem to want) — avoid discarding
+    if(dangerKeys.has(tKey(tile))) s+=3;
+
+    // Tiny randomness to avoid determinism
+    s+=(Math.random()-.5)*0.3;
+
+    if(s<bestScore){bestScore=s;bestTile=tile;}
+  }
+  return bestTile||hand[0];
+}
+
+// Build a set of tile keys that opponents appear to be collecting
+function getDangerKeys(myIdx){
+  const dangerous=new Set();
+  for(let p=0;p<4;p++){
+    if(p===myIdx)continue;
+    const pl=G.players[p];
+    // If player has 2+ melds showing, they're close — everything is dangerous
+    if(pl.melds.length>=2){
+      // Mark suit tiles they haven't discarded as potentially needed
+      const theirDiscards=G.discards.filter(d=>d.by===p).map(d=>tKey(d.tile));
+      for(const s of['B','C','CH']){
+        const suitDiscarded=theirDiscards.filter(k=>k.startsWith(s)).length;
+        if(suitDiscarded===0){
+          // They haven't discarded this suit at all — probably building it
+          for(let n=1;n<=9;n++)dangerous.add(`${s}${n}`);
+        }
+      }
+    }
+  }
+  return dangerous;
+}
+
+// Basic utility (used by easy AI)
+function utilityBasic(tile,hand){
+  let s=0;
+  const cnt=hand.filter(t=>same(t,tile)).length;
   if(cnt>=3)return 10;if(cnt===2)s+=4;
-  if(tile.type==='suit'){const{suit,num}=tile.value;s+=hand.filter(t=>t.type==='suit'&&t.value.suit===suit&&Math.abs(t.value.num-num)<=2&&t.value.num!==num).length*2;if(num>=3&&num<=7)s+=1;}
+  if(tile.type==='suit'){
+    const{suit,num}=tile.value;
+    s+=hand.filter(t=>t.type==='suit'&&t.value.suit===suit&&Math.abs(t.value.num-num)<=2&&t.value.num!==num).length*2;
+    if(num>=3&&num<=7)s+=1;
+  }
   return s;
 }
-function aiWantsClaim(hand,tile,type,diff){
-  const thr=diff==='easy'?.4:diff==='medium'?.65:.82;
-  if(type==='pung')return canPung(hand,tile)&&Math.random()<thr;
-  if(type==='chow')return canChow(hand,tile)&&Math.random()<thr*.7;
+
+// Should AI claim this discard?
+function aiWantsClaim(hand,tile,type,diff,playerIdx){
+  // Easy: random chance, no strategy
+  if(diff==='easy'){
+    const thr=type==='pung'?.45:.25;
+    if(type==='pung')return canPung(hand,tile)&&Math.random()<thr;
+    if(type==='chow')return canChow(hand,tile)&&Math.random()<thr;
+    return false;
+  }
+
+  // Medium: claim if it improves shanten, basic dead-tile check
+  if(diff==='medium'){
+    if(type==='pung'&&canPung(hand,tile)){
+      if(tileIsDead(tile))return false; // tile is dead, skip
+      const withMeld=hand.filter(t=>!same(t,tile)).slice(0,hand.length-2);
+      const improvement=shanten(hand)-shanten(withMeld);
+      return improvement>=0&&Math.random()<0.75;
+    }
+    if(type==='chow'&&canChow(hand,tile)){
+      return Math.random()<0.5;
+    }
+    return false;
+  }
+
+  // Hard: claim only if shanten improves AND concealment not worth more
+  if(type==='pung'&&canPung(hand,tile)){
+    // Don't claim if already concealed and close to winning
+    const currentShanten=shanten(hand);
+    if(currentShanten<=1&&G.concealed[playerIdx])return false; // stay hidden, nearly there
+    // Check improvement
+    const matching=hand.filter(t=>same(t,tile)).slice(0,2);
+    const afterClaim=hand.filter(t=>!matching.find(m=>m.id===t.id));
+    const improvement=currentShanten-shanten(afterClaim);
+    return improvement>0;
+  }
+  if(type==='chow'&&canChow(hand,tile)){
+    // Hard AI rarely takes chows — they score less and reveal hand
+    return shanten(hand)>=3&&Math.random()<0.3;
+  }
   return false;
 }
 
@@ -574,7 +804,7 @@ function renderAI(){
     const pl=G.players[p];
     const row=document.createElement('div');row.className='ai-row';
     const lbl=document.createElement('div');lbl.className='ai-label';
-    lbl.textContent=WL[pl.seat]+(pl.bonuses.length?` +${pl.bonuses.length}🌸`:'');
+    lbl.textContent=WL[pl.seat]+' '+WN[pl.seat].slice(0,1)+(pl.bonuses.length?` +${pl.bonuses.length}🌸`:'');
     row.appendChild(lbl);
     const td=document.createElement('div');td.className='ai-tiles';
     for(const m of pl.melds){for(const t of m.tiles)td.appendChild(mkTile(t,{small:true,melded:true}));const s=document.createElement('div');s.style.width='3px';td.appendChild(s);}
@@ -756,9 +986,22 @@ function humanWin(dt,selfDraw){
 function aiClaims(){
   if(!G.lastDiscard)return;
   const t=G.lastDiscard;
+  // Check wins first (any AI)
   for(let p=1;p<=3;p++){if(canWin([...G.players[p].hand,t])){aiWin(p,t);return;}}
+  // Check pungs
   let claimed=false;
-  for(let p=1;p<=3;p++){if(aiWantsClaim(G.players[p].hand,t,'pung',G.difficulty)){aiMeld(p,'pung',t);claimed=true;break;}}
+  for(let p=1;p<=3;p++){
+    if(aiWantsClaim(G.players[p].hand,t,'pung',G.difficulty,p)){
+      aiMeld(p,'pung',t);claimed=true;break;
+    }
+  }
+  // Check chow — only player directly after discarder
+  if(!claimed){
+    const nextP=((G.lastBy+1)%4);
+    if(nextP!==0&&aiWantsClaim(G.players[nextP].hand,t,'chow',G.difficulty,nextP)){
+      aiMeld(nextP,'chow',t);claimed=true;
+    }
+  }
   if(!claimed){
     G.curP=(G.lastBy+1)%4;
     if(G.curP===0){G.phase='draw';setSt('Your turn — tap Draw Tile.');renderAll();}
@@ -772,14 +1015,16 @@ function aiTurn(p){
   if(!dealTo(p)){endDraw();return;}
   setSt(`${WN[pl.seat]} is thinking…`);renderAll();
   if(canWin(pl.hand)){setTimeout(()=>aiWin(p,null),600);return;}
+  // Hard AI thinks a little longer
+  const thinkTime=G.difficulty==='hard'?1200+Math.random()*600:800+Math.random()*400;
   setTimeout(()=>{
-    const d=aiPickDiscard(pl.hand,G.difficulty);
+    const d=aiPickDiscard(pl.hand,G.difficulty,p);
     pl.hand=pl.hand.filter(t=>t.id!==d.id);
     G.discards.push({tile:d,by:p});G.lastDiscard=d;G.lastBy=p;G.phase='claim';
     setSt(`${WN[pl.seat]} discarded — Claim?`);renderAll();
     G.claimTimer=G.practice?null:setTimeout(()=>{if(G.phase==="claim")aiClaims();},G.difficulty==="easy"?6000:G.difficulty==="medium"?4000:2500);
     renderActions();
-  },800+Math.random()*400);
+  },thinkTime);
 }
 
 function aiMeld(p,type,tile){
@@ -789,10 +1034,24 @@ function aiMeld(p,type,tile){
     pl.melds.push({type:'pung',tiles:[tile,...m]});
     pl.hand=pl.hand.filter(t=>!m.find(x=>x.id===t.id));
     G.discards.pop();G.concealed[p]=false;
+  } else if(type==='chow'){
+    const{suit,num}=tile.value;
+    const st=pl.hand.filter(t=>t.type==='suit'&&t.value.suit===suit);
+    let ct=null;
+    for(let s=Math.max(1,num-2);s<=Math.min(7,num);s++){
+      const need=[s,s+1,s+2].filter(n=>n!==num);
+      const found=need.map(n=>st.find(t=>t.value.num===n)).filter(Boolean);
+      if(found.length===2){ct=found;break;}
+    }
+    if(ct){
+      pl.melds.push({type:'chow',tiles:[tile,...ct]});
+      pl.hand=pl.hand.filter(t=>!ct.find(x=>x.id===t.id));
+      G.discards.pop();G.concealed[p]=false;
+    }
   }
-  G.curP=p;G.phase='discard';setSt(`${WN[pl.seat]} claimed a Pung!`);renderAll();
+  G.curP=p;G.phase='discard';setSt(`${WN[pl.seat]} claimed a ${type==='pung'?'Pung':'Chow'}!`);renderAll();
   setTimeout(()=>{
-    const d=aiPickDiscard(pl.hand,G.difficulty);
+    const d=aiPickDiscard(pl.hand,G.difficulty,p);
     pl.hand=pl.hand.filter(t=>t.id!==d.id);
     G.discards.push({tile:d,by:p});G.lastDiscard=d;G.lastBy=p;G.phase='claim';
     setSt(`${WN[pl.seat]} discarded — Claim?`);renderAll();
@@ -840,30 +1099,44 @@ function showLoseModal(winner,pts,loss,selfDraw){
     {l:'Menu',c:'btn-ghost',f:showMenu},
   ]);
 }
-function modal(title,body,btns){
+function modal(title,body,btns,closeable=false){
   document.getElementById('modalTitle').textContent=title;
   document.getElementById('modalBody').innerHTML=body;
   const bc=document.getElementById('modalBtns');bc.innerHTML='';
   for(const b of btns){const el=document.createElement('button');el.className=`btn ${b.c}`;el.textContent=b.l;el.onclick=b.f;bc.appendChild(el);}
+  const closeBtn=document.getElementById('modalClose');
+  closeBtn.style.display=closeable?'block':'none';
+  closeBtn.onclick=closeable?hideModal:null;
   document.getElementById('modalOverlay').classList.add('active');
 }
 function hideModal(){document.getElementById('modalOverlay').classList.remove('active');}
 
 function showRules(){
   modal('Rules',`
-    <p><strong style="color:var(--gold)">Goal:</strong> 4 sets + 1 pair = Mahjong!</p><br>
-    <p><strong style="color:var(--gold)">Sets:</strong></p>
-    <p>• <strong>Chow</strong> — 3 consecutive, same suit</p>
+    <p><strong style="color:var(--gold)">Goal</strong></p>
+    <p>Build 4 sets + 1 pair to declare Mahjong.</p><br>
+    <p><strong style="color:var(--gold)">The Sets</strong></p>
+    <p>• <strong>Chow</strong> — 3 consecutive tiles, same suit</p>
     <p>• <strong>Pung</strong> — 3 identical tiles</p>
     <p>• <strong>Kong</strong> — 4 identical tiles</p>
-    <p>• <strong>Pair</strong> — 2 identical (need exactly 1)</p><br>
-    <p><strong style="color:var(--gold)">Suits:</strong> Green stalks = Bamboo · Blue rings = Circle · Red grid = Character</p><br>
-    <p><strong style="color:var(--gold)">Claim priority:</strong> Win > Pung > Chow</p><br>
-    <p><strong style="color:var(--gold)">Controls:</strong></p>
-    <p>• Tap Draw → see your tile → tap to accept</p>
-    <p>• Drag tile up into red zone → discard it</p>
-    <p>• Drag within hand → reorder tiles</p>
-  `,[{l:'Got it',c:'btn-primary',f:hideModal}]);
+    <p>• <strong>Pair</strong> — 2 identical tiles (need exactly 1)</p><br>
+    <p><strong style="color:var(--gold)">The Suits</strong></p>
+    <p>• Green stalks = Bamboo</p>
+    <p>• Blue rings = Circle</p>
+    <p>• Red grid = Character</p>
+    <p>• Compass = Wind &nbsp;·&nbsp; 中發白 = Dragons</p><br>
+    <p><strong style="color:var(--gold)">Claiming Discards</strong></p>
+    <p>When an AI discards, claim buttons appear at the bottom. Priority: Win > Pung > Chow. Chow is only available from the player directly before you.</p><br>
+    <p><strong style="color:var(--gold)">Scoring Bonuses</strong></p>
+    <p>• Self-draw win (drew your own winning tile): +2</p>
+    <p>• Concealed hand (no melds): +4</p>
+    <p>• Pung of honor tiles (Winds, Dragons): +4 each</p>
+    <p>• Bonus flower/season tiles: +1 each</p><br>
+    <p><strong style="color:var(--gold)">Controls</strong></p>
+    <p>• Tap Draw → tile reveals large → tap to accept into hand</p>
+    <p>• Drag tile up into the red zone → discard it</p>
+    <p>• Drag within hand → reorder tiles anytime</p>
+  `,[{l:'Got it',c:'btn-primary',f:hideModal}],true);
 }
 
 // ══════════════════════════════════════════
@@ -871,19 +1144,33 @@ function showRules(){
 // ══════════════════════════════════════════
 function renderHint(){
   const pl=G.players[0];let h='';
-  if(G.phase==='draw')h='Tap "Draw Tile" to see your tile before it enters your hand.';
-  else if(G.phase==='discard'){
-    if(canWin(pl.hand))h='🀄 You can win! Tap Mahjong!';
+  if(G.phase==='draw'){
+    const s=shanten(pl.hand);
+    h=s===-1?'You can win! Draw and declare Mahjong.':
+      s===0?'One tile from Mahjong — tap Draw!':
+      `${s+1} tiles from Mahjong. Tap Draw Tile.`;
+  } else if(G.phase==='discard'){
+    if(canWin(pl.hand)){h='🀄 You can win! Tap Mahjong!';}
     else{
-      const iso=pl.hand.filter(t=>{const o=pl.hand.filter(x=>x.id!==t.id);return!canPung(o,t)&&(t.type!=='suit'||!canChow(o,t));});
-      h=iso.length?`Safe to discard: ${iso.slice(0,3).map(tKey).join(', ')}`:'Drag a tile up into the red discard zone.';
+      let bestTile=null,bestS=999;
+      for(const t of pl.hand){
+        const rest=pl.hand.filter(x=>x.id!==t.id);
+        const s=shanten(rest)-(tileIsDead(t)?0.5:0);
+        if(s<bestS){bestS=s;bestTile=t;}
+      }
+      const currentS=shanten(pl.hand);
+      h=bestTile?`Best discard: ${tKey(bestTile)} · ${currentS} tile${currentS!==1?'s':''} from Mahjong`:'Drag a tile to the discard zone.';
     }
   } else if(G.phase==='claim'&&G.lastDiscard){
     const t=G.lastDiscard,hs=[];
-    if(canWin([...pl.hand,t]))hs.push('You can WIN!');
-    if(canPung(pl.hand,t))hs.push('Pung available');
+    if(canWin([...pl.hand,t]))hs.push('🀄 You can WIN on this tile!');
+    if(canPung(pl.hand,t)){
+      const dead=tileIsDead(t);
+      hs.push(`Pung available${dead?' (tile is scarce — consider passing)':''}`);
+    }
     if(canChow(pl.hand,t))hs.push('Chow available');
-    h=hs.length?hs.join(' · '):"Pass — tile doesn't help.";
+    if(!hs.length)hs.push("Pass — this tile doesn't help.");
+    h=hs.join(' · ');
   }
   document.getElementById('hintText').textContent=h;
 }
