@@ -49,7 +49,7 @@ body{font-family:'DM Mono',monospace;color:var(--text);display:flex;flex-directi
 /* GAME */
 #game{background:var(--felt);flex-direction:column;overflow:hidden;position:relative;}
 #game::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(0,0,0,0.04) 40px,rgba(0,0,0,0.04) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(0,0,0,0.04) 40px,rgba(0,0,0,0.04) 41px);pointer-events:none;}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(0,0,0,0.4);border-bottom:1px solid rgba(255,255,255,0.06);flex-shrink:0;z-index:10;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(0,0,0,0.45);border-bottom:1px solid rgba(255,255,255,0.06);flex-shrink:0;z-index:10;}
 .topbar-left{display:flex;align-items:center;gap:10px;}
 .round-badge{font-family:'Noto Serif TC',serif;font-size:18px;color:var(--red);}
 .wind-info{font-size:10px;color:var(--dim);letter-spacing:0.1em;}
@@ -57,56 +57,67 @@ body{font-family:'DM Mono',monospace;color:var(--text);display:flex;flex-directi
 .topbar-right{display:flex;gap:8px;}
 .icon-btn{background:transparent;border:none;color:var(--dim);font-size:18px;cursor:pointer;padding:4px;line-height:1;}
 
-/* AI — opposite player across top, two side players flanking */
-.ai-area{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;padding:6px 8px;flex-shrink:0;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(255,255,255,0.05);}
-.ai-row{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 6px;background:rgba(0,0,0,0.15);border-radius:6px;}
-.ai-label{font-size:9px;letter-spacing:0.1em;color:var(--dim);text-align:center;}
-.ai-tiles{display:flex;gap:2px;flex-wrap:wrap;justify-content:center;max-width:100%;}
+/* AI — compact scoreboard strip, no tile display in non-practice mode */
+.ai-area{display:flex;gap:0;flex-shrink:0;background:rgba(0,0,0,0.35);border-bottom:1px solid rgba(255,255,255,0.06);}
+.ai-row{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:5px 4px;border-right:1px solid rgba(255,255,255,0.05);}
+.ai-row:last-child{border-right:none;}
+.ai-label{font-size:10px;letter-spacing:0.05em;color:var(--dim);text-align:center;margin-bottom:2px;}
+.ai-count{font-family:'Noto Serif TC',serif;font-size:13px;color:var(--text);opacity:0.8;}
+.ai-melds{display:flex;gap:2px;flex-wrap:wrap;justify-content:center;margin-top:2px;}
+/* In practice mode tiles show — same strip but tiles visible */
+.ai-tiles{display:flex;gap:1px;flex-wrap:wrap;justify-content:center;max-width:100%;margin-top:2px;}
 
 .status{padding:5px 12px;font-size:11px;color:var(--gold);letter-spacing:0.08em;text-align:center;min-height:24px;background:rgba(0,0,0,0.3);border-bottom:1px solid rgba(255,255,255,0.04);flex-shrink:0;}
 
 /* CENTER — fills all available space */
-.center-area{flex:1;display:flex;flex-direction:column;align-items:stretch;gap:0;padding:0;min-height:0;position:relative;}
-.discard-pool-label{font-size:9px;color:var(--dim);letter-spacing:0.1em;padding:6px 10px 2px;opacity:0.6;}
-.discard-pool{flex:1;display:flex;flex-wrap:wrap;gap:4px;justify-content:center;align-content:flex-start;overflow-y:auto;padding:8px 10px;min-height:0;}
+.center-area{flex:1;display:flex;flex-direction:column;align-items:stretch;gap:0;padding:0;min-height:0;}
+.discard-pool-label{font-size:9px;color:var(--dim);letter-spacing:0.1em;padding:6px 10px 2px;opacity:0.5;}
+.discard-pool{flex:1;display:flex;flex-wrap:wrap;gap:5px;justify-content:center;align-content:flex-start;overflow-y:auto;padding:8px 10px;min-height:0;}
 
-/* DISCARD ZONE — sits above player hand, full width */
-.discard-zone{width:100%;min-height:52px;border-top:2px dashed rgba(192,57,43,0.35);border-bottom:2px dashed rgba(192,57,43,0.35);display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(192,57,43,0.04);transition:all 0.18s;flex-shrink:0;}
+/* DISCARD ZONE */
+.discard-zone{width:100%;min-height:56px;border-top:2px dashed rgba(192,57,43,0.35);border-bottom:2px dashed rgba(192,57,43,0.35);display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(192,57,43,0.04);transition:all 0.18s;flex-shrink:0;}
 .discard-zone.hidden{display:none;}
 .discard-zone.hot{border-color:var(--red);background:rgba(192,57,43,0.15);box-shadow:0 0 20px rgba(192,57,43,0.25) inset;}
 .dz-icon{font-size:20px;opacity:0.35;pointer-events:none;}
-.dz-label{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(192,57,43,0.55);pointer-events:none;}
+.dz-label{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(192,57,43,0.6);pointer-events:none;}
 
-/* PLAYER — compact, anchored bottom */
-.player-area{flex-shrink:0;background:rgba(0,0,0,0.35);border-top:1px solid rgba(255,255,255,0.1);}
-.player-melds{display:flex;gap:3px;padding:5px 10px;min-height:30px;flex-wrap:wrap;align-items:center;border-bottom:1px solid rgba(255,255,255,0.04);}
-.player-hand-wrap{padding:6px 6px 4px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;display:flex;justify-content:center;}
+/* PLAYER */
+.player-area{flex-shrink:0;background:rgba(0,0,0,0.4);border-top:1px solid rgba(255,255,255,0.1);}
+.player-melds{display:flex;gap:3px;padding:5px 10px;min-height:28px;flex-wrap:wrap;align-items:center;border-bottom:1px solid rgba(255,255,255,0.05);}
+.player-hand-wrap{padding:8px 6px 6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;display:flex;justify-content:center;}
 .player-hand-wrap::-webkit-scrollbar{display:none;}
-.player-hand{display:flex;gap:4px;padding:2px 4px;min-width:max-content;}
+.player-hand{display:flex;gap:5px;padding:2px 6px;min-width:max-content;}
 
-/* Actions live on the felt, above the dark player panel */
-.player-actions{display:flex;gap:8px;padding:8px 10px;justify-content:center;flex-wrap:wrap;align-items:center;background:transparent;}
+/* Actions on the felt */
+.player-actions{display:flex;gap:8px;padding:8px 12px;justify-content:center;flex-wrap:wrap;align-items:center;background:transparent;}
 
-/* TILES */
-.tile{width:38px;height:52px;background:var(--tile-bg);border:1.5px solid var(--tile-border);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:grab;box-shadow:2px 2px 0 var(--tile-shadow);flex-shrink:0;position:relative;user-select:none;-webkit-user-select:none;touch-action:none;gap:2px;}
+/* TILES — bigger player tiles */
+.tile{width:44px;height:60px;background:var(--tile-bg);border:1.5px solid var(--tile-border);border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:grab;box-shadow:2px 3px 0 var(--tile-shadow);flex-shrink:0;position:relative;user-select:none;-webkit-user-select:none;touch-action:none;gap:3px;}
 .tile:active{cursor:grabbing;}
-.tile-num{font-family:'Noto Serif TC',serif;font-size:13px;font-weight:900;line-height:1;}
-.tile-icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;}
+.tile-num{font-family:'Noto Serif TC',serif;font-size:15px;font-weight:900;line-height:1;}
+.tile-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center;}
 .tile-icon svg{width:100%;height:100%;}
 .tile.face-down{background:#1a5c35;border-color:#145029;cursor:default;}
 .tile.face-down .tile-num,.tile.face-down .tile-icon{display:none;}
 .tile.face-down::after{content:'';position:absolute;inset:4px;border:1px solid rgba(255,255,255,0.12);border-radius:2px;}
-.tile.small{width:25px;height:34px;border-radius:3px;box-shadow:1px 1px 0 var(--tile-shadow);gap:1px;}
-.tile.small .tile-num{font-size:9px;} .tile.small .tile-icon{width:13px;height:13px;}
+.tile.small{width:22px;height:30px;border-radius:3px;box-shadow:1px 1px 0 var(--tile-shadow);gap:1px;}
+.tile.small .tile-num{font-size:8px;} .tile.small .tile-icon{width:11px;height:11px;}
 .tile.small.face-down::after{inset:2px;}
-.tile.dt{width:32px;height:44px;border-radius:4px;cursor:default;box-shadow:1px 1px 0 var(--tile-shadow);gap:1px;}
-.tile.dt .tile-num{font-size:12px;} .tile.dt .tile-icon{width:16px;height:16px;}
-.tile.ld{border-color:var(--gold);box-shadow:0 0 8px rgba(212,168,67,0.7),1px 1px 0 var(--tile-shadow);}
+.tile.dt{width:36px;height:50px;border-radius:4px;cursor:default;box-shadow:1px 2px 0 var(--tile-shadow);gap:2px;}
+.tile.dt .tile-num{font-size:13px;} .tile.dt .tile-icon{width:18px;height:18px;}
+.tile.ld{border-color:var(--gold);box-shadow:0 0 8px rgba(212,168,67,0.7),1px 2px 0 var(--tile-shadow);}
 .tile.melded{opacity:0.85;}
 .tile.dragging{opacity:0.3;}
-.tile.ghost-slot{background:rgba(245,237,216,0.12);border:1.5px dashed rgba(212,168,67,0.5);box-shadow:none;}
-.tile.reveal{width:72px;height:100px;box-shadow:4px 4px 0 var(--tile-shadow),0 8px 30px rgba(0,0,0,0.5);gap:4px;cursor:pointer;}
-.tile.reveal .tile-num{font-size:26px;} .tile.reveal .tile-icon{width:38px;height:38px;}
+.tile.ghost-slot{width:44px;height:60px;background:rgba(245,237,216,0.12);border:1.5px dashed rgba(212,168,67,0.5);box-shadow:none;border-radius:5px;}
+.tile.reveal{width:80px;height:112px;box-shadow:4px 4px 0 var(--tile-shadow),0 8px 30px rgba(0,0,0,0.5);gap:5px;cursor:pointer;border-radius:8px;}
+.tile.reveal .tile-num{font-size:30px;} .tile.reveal .tile-icon{width:44px;height:44px;}
+
+/* HINT — always in flow, never clipped */
+.hint-panel{background:rgba(0,0,0,0.92);border-top:1px solid rgba(212,168,67,0.3);padding:10px 14px;font-size:13px;color:var(--text);line-height:1.6;display:none;flex-shrink:0;}
+.hint-panel.visible{display:block;}
+.hint-title{color:var(--gold);font-size:12px;letter-spacing:0.15em;text-transform:uppercase;}
+.hint-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.hint-close{background:transparent;border:none;color:var(--text);font-size:24px;cursor:pointer;padding:0 2px;line-height:1;}
 
 /* DRAW REVEAL */
 #drawReveal{position:fixed;inset:0;background:rgba(0,0,0,0.78);display:none;align-items:center;justify-content:center;flex-direction:column;gap:20px;z-index:200;backdrop-filter:blur(3px);}
@@ -117,7 +128,7 @@ body{font-family:'DM Mono',monospace;color:var(--text);display:flex;flex-directi
 .reveal-hint{font-size:10px;color:var(--dim);letter-spacing:0.1em;}
 
 /* DRAG GHOST */
-#dragGhost{position:fixed;pointer-events:none;z-index:999;width:38px;height:52px;background:var(--tile-bg);border:2px solid var(--gold);border-radius:4px;display:none;flex-direction:column;align-items:center;justify-content:center;box-shadow:4px 10px 20px rgba(0,0,0,0.6);gap:2px;transform:rotate(4deg) scale(1.1);}
+#dragGhost{position:fixed;pointer-events:none;z-index:999;width:44px;height:60px;background:var(--tile-bg);border:2px solid var(--gold);border-radius:5px;display:none;flex-direction:column;align-items:center;justify-content:center;box-shadow:4px 10px 20px rgba(0,0,0,0.6);gap:3px;transform:rotate(4deg) scale(1.1);}
 
 /* ACTIONS */
 .act-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;padding:8px 14px;border:none;border-radius:3px;cursor:pointer;transition:all 0.12s;text-transform:uppercase;}
@@ -127,6 +138,56 @@ body{font-family:'DM Mono',monospace;color:var(--text);display:flex;flex-directi
 .act-pass{background:rgba(255,255,255,0.1);color:var(--dim);}
 .act-mahjong{background:var(--red);color:#fff;font-weight:700;animation:glow 1s ease-in-out infinite alternate;}
 @keyframes glow{from{box-shadow:0 0 6px rgba(192,57,43,0.4);}to{box-shadow:0 0 20px rgba(192,57,43,1);}}
+/* RESULT PANEL — slides up over center, table stays visible */
+#resultPanel{
+  position:absolute;
+  left:0;right:0;bottom:0;
+  background:linear-gradient(to top, rgba(6,20,10,0.98) 0%, rgba(10,30,16,0.96) 100%);
+  border-top:2px solid rgba(212,168,67,0.4);
+  border-radius:16px 16px 0 0;
+  padding:20px 24px 28px;
+  z-index:50;
+  transform:translateY(100%);
+  transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);
+  pointer-events:none;
+}
+#resultPanel.visible{
+  transform:translateY(0);
+  pointer-events:all;
+}
+.result-handle{
+  width:40px;height:4px;
+  background:rgba(212,168,67,0.3);
+  border-radius:2px;
+  margin:0 auto 16px;
+}
+.result-title{
+  font-family:'Noto Serif TC',serif;
+  font-size:24px;font-weight:900;
+  color:var(--gold);
+  text-align:center;
+  margin-bottom:16px;
+  letter-spacing:0.05em;
+}
+.result-title.win{color:var(--gold);}
+.result-title.lose{color:rgba(192,57,43,0.9);}
+.result-title.draw{color:var(--dim);}
+.result-rows{margin-bottom:20px;}
+.result-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 0;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+  font-size:15px;color:var(--dim);
+}
+.result-row:last-child{border-bottom:none;}
+.result-val{
+  font-family:'Noto Serif TC',serif;
+  font-size:18px;color:var(--gold);
+}
+.result-val.positive{color:var(--green);}
+.result-val.negative{color:var(--red);}
+.result-btns{display:flex;gap:10px;flex-direction:column;}
+
 /* HARD MODE — tile claim animation */
 @keyframes slideIntoHand{
   0%{transform:translateY(-180px) scale(1.15);opacity:1;}
@@ -245,12 +306,19 @@ body{font-family:'DM Mono',monospace;color:var(--text);display:flex;flex-directi
       <div class="player-hand" id="playerHand"></div>
     </div>
     <div class="hint-panel" id="hintPanel">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+      <div class="hint-header">
         <div class="hint-title">💡 Practice Hint</div>
-        <button onclick="toggleHint()" style="background:transparent;border:none;color:var(--text);font-size:24px;cursor:pointer;padding:0 4px;line-height:1;">✕</button>
+        <button class="hint-close" onclick="toggleHint()">✕</button>
       </div>
       <div id="hintText">Tap Draw Tile to begin.</div>
     </div>
+  </div>
+  <!-- RESULT PANEL — slides up over table -->
+  <div id="resultPanel">
+    <div class="result-handle"></div>
+    <div class="result-title" id="resultTitle"></div>
+    <div class="result-rows" id="resultRows"></div>
+    <div class="result-btns" id="resultBtns"></div>
   </div>
 </div>
 
@@ -826,8 +894,8 @@ function onDragMove(e){
 
   // Move ghost
   const gh=document.getElementById('dragGhost');
-  gh.style.left=(x-19)+'px';
-  gh.style.top=(y-60)+'px';
+  gh.style.left=(x-22)+'px';
+  gh.style.top=(y-70)+'px';
 
   // Check discard zone
   const zone=document.getElementById('discardZone');
@@ -911,8 +979,8 @@ function buildGhost(tile,x,y){
   const ic=document.createElement('div');ic.className='tile-icon';ic.innerHTML=getSVG(tile);
   gh.appendChild(n);gh.appendChild(ic);
   gh.style.display='flex';
-  gh.style.left=(x-19)+'px';
-  gh.style.top=(y-60)+'px';
+  gh.style.left=(x-22)+'px';
+  gh.style.top=(y-70)+'px';
 }
 
 function renderHandWhileDragging(){
@@ -956,13 +1024,36 @@ function renderAI(){
   for(let p=1;p<=3;p++){
     const pl=G.players[p];
     const row=document.createElement('div');row.className='ai-row';
+
+    // Label: wind symbol + name initial + bonus
     const lbl=document.createElement('div');lbl.className='ai-label';
-    lbl.textContent=WL[pl.seat]+' '+WN[pl.seat].slice(0,1)+(pl.bonuses.length?` +${pl.bonuses.length}🌸`:'');
+    lbl.textContent=WL[pl.seat]+' '+WN[pl.seat].slice(0,1)+(pl.bonuses.length?` 🌸${pl.bonuses.length}`:'');
     row.appendChild(lbl);
-    const td=document.createElement('div');td.className='ai-tiles';
-    for(const m of pl.melds){for(const t of m.tiles)td.appendChild(mkTile(t,{small:true,melded:true}));const s=document.createElement('div');s.style.width='3px';td.appendChild(s);}
-    for(const t of pl.hand)td.appendChild(mkTile(t,{small:true,faceDown:!G.practice}));
-    row.appendChild(td);area.appendChild(row);
+
+    if(G.practice){
+      // Practice: show all tiles small
+      const td=document.createElement('div');td.className='ai-tiles';
+      for(const m of pl.melds){
+        for(const t of m.tiles)td.appendChild(mkTile(t,{small:true,melded:true}));
+        const s=document.createElement('div');s.style.width='2px';td.appendChild(s);
+      }
+      for(const t of pl.hand)td.appendChild(mkTile(t,{small:true,faceDown:false}));
+      row.appendChild(td);
+    } else {
+      // Game mode: show tile count + melded sets only
+      const cnt=document.createElement('div');cnt.className='ai-count';
+      cnt.textContent=`${pl.hand.length} tiles`;
+      row.appendChild(cnt);
+      if(pl.melds.length){
+        const md=document.createElement('div');md.className='ai-melds';
+        for(const m of pl.melds){
+          for(const t of m.tiles)md.appendChild(mkTile(t,{small:true,melded:true}));
+          const s=document.createElement('div');s.style.width='2px';md.appendChild(s);
+        }
+        row.appendChild(md);
+      }
+    }
+    area.appendChild(row);
   }
 }
 
@@ -1252,31 +1343,62 @@ function aiWin(p,dt){
 // ══════════════════════════════════════════
 function endDraw(){
   G.over=true;showZone(false);
-  modal('Draw!','<p>The wall ran out — no winner.</p>',[
-    {l:'Play Again',c:'btn-primary',f:()=>{hideModal();startGame(G.practice);}},
-    {l:'Menu',c:'btn-ghost',f:showMenu},
-  ]);
+  showResult('draw','Wall Empty — Draw',
+    [['Result','No winner this round']],
+    []
+  );
 }
 function showWinModal(pts,selfDraw){
-  let b=`<div class="modal-row"><span>Hand value</span><span class="modal-val">${pts} pts</span></div>`;
-  b+=`<div class="modal-row"><span>Win type</span><span class="modal-val">${selfDraw?'Self-draw':'Discard claim'}</span></div>`;
-  b+=`<div class="modal-row"><span>Concealed</span><span class="modal-val">${G.concealed[0]?'Yes ✓':'No'}</span></div>`;
-  b+=`<div class="modal-row"><span>Total score</span><span class="modal-val" style="color:var(--green)">${G.totalScore} pts</span></div>`;
-  modal('麻將! You Win! 🀄',b,[
-    {l:'Next Round',c:'btn-primary',f:()=>{hideModal();startGame(G.practice);}},
-    {l:'Menu',c:'btn-ghost',f:showMenu},
-  ]);
+  showResult('win','麻將! You Win! 🀄',[
+    ['Hand value', pts+' pts', 'positive'],
+    ['Win type', selfDraw?'Self-draw':'Discard claim'],
+    ['Concealed', G.concealed[0]?'Yes ✓':'No'],
+    ['Total score', G.totalScore+' pts', 'positive'],
+  ],[]);
 }
 function showLoseModal(winner,pts,loss,selfDraw){
   const pl=G.players[winner];
-  let b=`<div class="modal-row"><span>${WN[pl.seat]} wins</span><span class="modal-val">${pts} pts</span></div>`;
-  b+=`<div class="modal-row"><span>Win type</span><span class="modal-val">${selfDraw?'Self-draw':'Off your discard'}</span></div>`;
-  b+=`<div class="modal-row"><span>Your change</span><span class="modal-val" style="color:var(--red)">${loss} pts</span></div>`;
-  b+=`<div class="modal-row"><span>Total score</span><span class="modal-val">${G.totalScore} pts</span></div>`;
-  modal(`${WN[pl.seat]} Wins!`,b,[
-    {l:'Next Round',c:'btn-primary',f:()=>{hideModal();startGame(G.practice);}},
-    {l:'Menu',c:'btn-ghost',f:showMenu},
-  ]);
+  showResult('lose',WN[pl.seat]+' Wins',[
+    [WN[pl.seat]+' hand', pts+' pts'],
+    ['Win type', selfDraw?'Self-draw':'Off your discard'],
+    ['Your change', loss+' pts', 'negative'],
+    ['Total score', G.totalScore+' pts', G.totalScore>=0?'positive':'negative'],
+  ],[]);
+}
+function showResult(type,title,rows,_){
+  const panel=document.getElementById('resultPanel');
+  const titleEl=document.getElementById('resultTitle');
+  const rowsEl=document.getElementById('resultRows');
+  const btnsEl=document.getElementById('resultBtns');
+
+  titleEl.textContent=title;
+  titleEl.className='result-title '+type;
+
+  rowsEl.innerHTML='';
+  for(const [label,val,valClass] of rows){
+    const row=document.createElement('div');row.className='result-row';
+    const l=document.createElement('span');l.textContent=label;
+    const v=document.createElement('span');v.className='result-val'+(valClass?' '+valClass:'');v.textContent=val;
+    row.appendChild(l);row.appendChild(v);
+    rowsEl.appendChild(row);
+  }
+
+  btnsEl.innerHTML='';
+  const nextBtn=document.createElement('button');
+  nextBtn.className='btn btn-primary';
+  nextBtn.textContent='Next Round';
+  nextBtn.onclick=()=>{hideResult();startGame(G.practice);};
+  const menuBtn=document.createElement('button');
+  menuBtn.className='btn btn-ghost';
+  menuBtn.textContent='Menu';
+  menuBtn.onclick=()=>{hideResult();showMenu();};
+  btnsEl.appendChild(nextBtn);btnsEl.appendChild(menuBtn);
+
+  // Small delay so the table render happens first, then panel slides up
+  setTimeout(()=>panel.classList.add('visible'),80);
+}
+function hideResult(){
+  document.getElementById('resultPanel').classList.remove('visible');
 }
 function modal(title,body,btns,closeable=false){
   document.getElementById('modalTitle').textContent=title;
@@ -1374,6 +1496,7 @@ function startGame(practice){
   if(practice)document.getElementById('hintPanel').classList.add('visible');
   else document.getElementById('hintPanel').classList.remove('visible');
   showZone(false);
+  hideResult();
   G.phase='draw';G.curP=0;
   setSt('Your turn — tap Draw Tile.');
   renderAll();
@@ -1381,10 +1504,10 @@ function startGame(practice){
 
 function showMenu(){
   clearTimeout(G.claimTimer);
-  // clean up any active drag
   dragCleanup();D.active=false;D.tileId=null;
   document.getElementById('drawReveal').classList.remove('active');
   document.getElementById('discardZone').classList.remove('hot');
+  document.getElementById('resultPanel').classList.remove('visible');
   document.getElementById('game').classList.remove('active');
   document.getElementById('menu').classList.add('active');
   hideModal();
